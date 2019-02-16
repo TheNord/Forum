@@ -22,7 +22,7 @@
                 <div class="mt-4">
                     <h2>New reply</h2>
                     @if (auth()->check())
-                        <form action="{{ route('reply.store', $thread->id) }}" method="post">
+                        <form action="{{ route('reply.store', [$thread->channel, $thread->id]) }}" method="post">
                             @csrf
                             <div class="form-group">
                                 <label for="body"></label>

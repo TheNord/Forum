@@ -25,7 +25,8 @@ class CreateRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'body' => 'required'
+            'body' => 'required',
+            'channel_id' => 'required', 'exists:channels,id'
         ];
     }
 }

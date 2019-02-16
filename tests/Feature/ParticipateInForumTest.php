@@ -19,7 +19,7 @@ class ParticipateInForum extends TestCase
         $thread = create('App\Thread');
         $reply = create('App\Reply');
 
-        $response = $this->post(route('reply.store', $thread->id), $reply->toArray());
+        $response = $this->post(route('reply.store', [$thread->channel, $thread->id]), $reply->toArray());
         $this->assertEquals(302, $response->getStatusCode());
     }
     
@@ -36,9 +36,23 @@ class ParticipateInForum extends TestCase
 
         // create reply
         $reply = make('App\Reply');
-        $this->post(route('reply.store', $thread->id), $reply->toArray());
 
-        $this->get(route('threads.show', $thread->id))
+        $this->post(route('reply.store', [$thread->channel, $thread->id]), $reply->toArray());
+
+        $this->get(route('threads.show', [$thread->channel, $thread->id]))
             ->assertSee($reply->body);
+    }
+    
+    /**
+    * @test
+    */
+    public function a_reply_requires_a_body()
+    {
+        $this->signIn(create('App\User'));
+
+        $thread = create('App\Thread');
+
+        $this->post(route('reply.store', [$thread->channel, $thread]))
+            ->assertSessionHasErrors(['body']);
     }
 }

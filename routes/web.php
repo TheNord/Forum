@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -19,7 +21,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/threads', 'ThreadController@index')->name('threads');
-Route::get('/threads/{thread}', 'ThreadController@show')->name('threads.show');
+Route::get('/threads', 'ThreadController@index')->name('threads.index');
+Route::get('/threads/{channel}/{thread}', 'ThreadController@show')->name('threads.show');
+Route::get('/threads/create', 'ThreadController@create')->name('threads.create');
 Route::post('/threads', 'ThreadController@store')->name('threads.store');
-Route::post('/threads/{thread}/replies', 'ReplyController@store')->name('reply.store');
+
+Route::get('/threads/{channel}', 'ChannelController@show')->name('channel.show');
+Route::post('/threads/{channel}/{thread}/replies', 'ReplyController@store')->name('reply.store');
