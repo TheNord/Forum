@@ -10,6 +10,5 @@
         <article>
             <div class="body">{{ $reply->body }}</div>
         </article>
-        <hr>
     </div>
 </div>
