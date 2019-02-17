@@ -16,6 +16,10 @@ class ThreadService
             return Thread::where(['user_id' => $user->id]);
         }
 
+        if ($request->has('popular')) {
+            return Thread::orderBy('replies_count', 'desc');
+        }
+
         return Thread::latest();
     }
 }

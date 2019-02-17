@@ -5,18 +5,20 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 @foreach($threads as $thread)
-                    <div class="card mt-4">
-                        <div class="card-header">
-                            <a href="{{ route('threads.show', [$thread->channel, $thread->id]) }}">
-                                {{ $thread->title }}
-                            </a>
-                        </div>
-                        <div class="card-body">
-                            <article>
+                    <article>
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <a href="{{ route('threads.show', [$thread->channel, $thread->id]) }}">
+                                    {{ $thread->title }}
+                                </a>
+
+                                <strong class="float-right">{{ $thread->replies_count }} {{ str_plural('reply', $thread->replies_count) }}</strong>
+                            </div>
+                            <div class="card-body">
                                 <div class="body">{{ $thread->body }}</div>
-                            </article>
+                            </div>
                         </div>
-                    </div>
+                    </article>
                 @endforeach
                 <div class="mt-4">
                     {{ $threads->links() }}
