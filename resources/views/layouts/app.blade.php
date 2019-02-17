@@ -42,10 +42,6 @@
                             <a class="nav-link" href="{{ route('threads.index') }}">Threads</a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('threads.create') }}">New Thread</a>
-                        </li>
-
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Channels
@@ -74,6 +70,14 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('threads.create') }}">
+                                       New Thread
+                                    </a>
+
+                                    <a class="dropdown-item" href="{{ route('threads.index') }}?by={{ auth()->user()->name }}">
+                                        My threads
+                                    </a>
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

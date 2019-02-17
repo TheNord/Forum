@@ -2,12 +2,11 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row">
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <a href="#">{{ $thread->creator->name }}</a>
-                        posted: {{ $thread->title }}
+                        {{ $thread->title }}
                     </div>
 
                     <div class="card-body">
@@ -15,9 +14,14 @@
                     </div>
                 </div>
 
-                @foreach($thread->replies as $reply)
+                @foreach($replies as $reply)
                     @include('threads.reply')
                 @endforeach
+
+                <div class="mt-4">
+                    {{ $replies->links() }}
+                </div>
+
 
                 <div class="mt-4">
                     <h2>New reply</h2>
@@ -39,6 +43,17 @@
                     @else
                         <p>Please <a href="{{ route('login') }}">sign in</a> to participate in this discussion.</p>
                     @endif
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <p>
+                            This thread was published {{ $thread->created_at->diffForHumans() }}
+                            by <a href="#">{{ $thread->creator->name }}</a> and currently has {{ $thread->replies_count }}
+                            {{ str_plural('reply', $thread->replies_count) }}
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

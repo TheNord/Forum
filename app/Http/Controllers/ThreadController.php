@@ -4,20 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Channel;
 use App\Http\Requests\Thread\CreateRequest;
+use App\Http\Services\ThreadService;
 use App\Thread;
+use App\User;
 use Illuminate\Http\Request;
 
 class ThreadController extends Controller
 {
-    public function __construct()
+    private $service;
+
+    public function __construct(ThreadService $service)
     {
         $this->middleware('auth')->except('index', 'show');
+        $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $threads = Thread::latest()->get();
 
+        $threads = $this->service->filterThread($request)->paginate(5);
         return view('threads.index', compact('threads'));
     }
 
@@ -41,7 +46,8 @@ class ThreadController extends Controller
 
     public function show(Channel $channel, Thread $thread)
     {
-        return view('threads.show', compact('thread'));
+        $replies = $thread->replies()->paginate(5);
+        return view('threads.show', compact('thread', 'replies'));
     }
 
     public function edit(Thread $thread)
