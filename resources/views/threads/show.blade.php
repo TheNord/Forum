@@ -7,6 +7,17 @@
                 <div class="card">
                     <div class="card-header">
                         {{ $thread->title }}
+
+                        @if($thread->isOwner())
+                        <div class="float-right">
+                            <form action="{{ route('threads.delete', [$thread->channel, $thread]) }}" method="post">
+                                @csrf
+                                @method('delete')
+
+                                <button class="btn-icn" type="submit"><i class="far fa-trash-alt icn-delete"></i></button>
+                            </form>
+                        </div>
+                        @endif
                     </div>
 
                     <div class="card-body">

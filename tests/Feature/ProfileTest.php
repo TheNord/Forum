@@ -15,7 +15,7 @@ class ProfileTest extends TestCase
      */
     public function a_user_has_a_profile()
     {
-        $user = create('App\User');
+        $user = create('App\User', ['name' => 'John Smith']);
 
         $this->get(route('user.profile', $user))
             ->assertSee($user->name);
@@ -26,7 +26,7 @@ class ProfileTest extends TestCase
     */
     public function a_user_has_a_created_threads_stats()
     {
-        $user = create('App\User');
+        $user = create('App\User', ['name' => 'John Smith']);
 
         $thread = create('App\Thread', ['user_id' => $user->id]);
 
@@ -39,7 +39,7 @@ class ProfileTest extends TestCase
     */
     public function a_user_has_a_reply_stats()
     {
-        $user = create('App\User');
+        $user = create('App\User', ['name' => 'John Smith']);
 
         create('App\Reply', ['user_id' => $user->id]);
 
@@ -52,8 +52,8 @@ class ProfileTest extends TestCase
     */
     public function a_user_has_a_receive_likes_stats()
     {
-        $userOne = create('App\User');
-        $userTwo = create('App\User');
+        $userOne = create('App\User', ['name' => 'John Smith']);
+        $userTwo = create('App\User', ['name' => 'Paul Jordan']);
 
         $reply = create('App\Reply', ['user_id' => $userOne->id]);
 

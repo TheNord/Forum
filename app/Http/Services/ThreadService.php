@@ -22,4 +22,17 @@ class ThreadService
 
         return Thread::latest();
     }
+
+    public function deleteThread(Thread $thread)
+    {
+        if (!$thread->isOwner()) {
+            throw new \LogicException('You can not delete the thread');
+        }
+
+        if ($thread->hasReplies()) {
+            throw new \LogicException('Can not delete topics with replies');
+        }
+
+        $thread->delete();
+    }
 }

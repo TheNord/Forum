@@ -36,4 +36,14 @@ class Thread extends Model
     {
         $this->replies()->create($reply);
     }
+
+    public function isOwner()
+    {
+        return $this->user_id == auth()->id();
+    }
+
+    public function hasReplies()
+    {
+        return !! $this->replies()->count();
+    }
 }
