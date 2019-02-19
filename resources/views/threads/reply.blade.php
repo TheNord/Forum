@@ -1,6 +1,6 @@
 <div class="card mt-4">
     <div class="card-header">
-        <a href="#">
+        <a href="{{ route('user.profile', $reply->owner) }}">
             {{ $reply->owner->name }}
         </a>
         said {{ $reply->created_at->diffForHumans() }}...

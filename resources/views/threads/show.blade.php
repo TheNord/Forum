@@ -50,7 +50,7 @@
                     <div class="card-body">
                         <p>
                             This thread was published {{ $thread->created_at->diffForHumans() }}
-                            by <a href="#">{{ $thread->creator->name }}</a> and currently has {{ $thread->replies_count }}
+                            by <a href="{{ route('user.profile', $thread->creator) }}">{{ $thread->creator->name }}</a> and currently has {{ $thread->replies_count }}
                             {{ str_plural('reply', $thread->replies_count) }}
                         </p>
                     </div>
