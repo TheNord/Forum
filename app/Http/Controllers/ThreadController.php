@@ -41,7 +41,8 @@ class ThreadController extends Controller
             'body' => $request->body
         ]);
 
-        return redirect()->route('threads.show', [$thread->channel, $thread]);
+        return redirect()->route('threads.show', [$thread->channel, $thread])
+            ->with('flash', 'Your thread has been published');
     }
 
     public function show(Channel $channel, Thread $thread)
@@ -62,7 +63,13 @@ class ThreadController extends Controller
 
     public function destroy(Channel $channel, Thread $thread)
     {
-        $this->service->deleteThread($thread);
-        return redirect()->route('threads.index');
+        try {
+            $this->service->deleteThread($thread);
+            return redirect()->route('threads.index')
+                ->with('flash', 'The thread successfully deleted');
+        } catch (\Exception $e) {
+            return back()->with('flash', $e->getMessage());
+        }
+
     }
 }

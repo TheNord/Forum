@@ -22,7 +22,8 @@ class ReplyController extends Controller
             'user_id' => auth()->id()
         ]);
 
-        return redirect()->route('threads.show', [$thread->channel->slug, $thread->id]);
+        return redirect()->route('threads.show', [$thread->channel->slug, $thread->id])
+            ->with('flash', 'Your reply has been left.');
     }
 
     public function edit(Reply $reply)
