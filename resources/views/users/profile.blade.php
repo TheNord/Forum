@@ -4,29 +4,15 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                @if ($threads->count())
-                    @foreach($threads as $thread)
-                        <article>
-                            <div class="card mt-4">
-                                <div class="card-header">
-                                    <a href="{{ route('threads.show', [$thread->channel, $thread->id]) }}">
-                                        {{ $thread->title }}
-                                    </a>
+                    @forelse($activities as $date => $activity)
+                        <h3 class="page-header">{{ $date }}</h3>
 
-                                    <strong class="float-right">{{ $thread->replies_count }} {{ str_plural('reply', $thread->replies_count) }}</strong>
-                                </div>
-                                <div class="card-body">
-                                    <div class="body">{{ $thread->body }}</div>
-                                </div>
-                            </div>
-                        </article>
-                    @endforeach
-                @else
-                    <p>This user has no created threads.</p>
-                @endif
-                <div class="mt-4">
-                    {{ $threads->links() }}
-                </div>
+                        @foreach ($activity as $record)
+                            @include ("users.activities.{$record->type}", ['activity' => $record])
+                        @endforeach
+                    @empty
+                        <p>This user has not yet had an activity.</p>
+                    @endforelse
             </div>
 
             <div class="col-md-4">
@@ -36,7 +22,7 @@
                     </div>
                     <div class="card-body">
                         <p>Registered {{ $user->created_at->diffForHumans() }}</p>
-                        <p>Created {{ $threads->count() }} {{ str_plural('thread', $threads->count()) }}</p>
+                        <p>Created {{ $threads_count }} {{ str_plural('thread', $threads_count) }}</p>
                         <p>Added {{ $replies_count }} {{ str_plural('replies', $replies_count) }}</p>
                         <p>Get {{ $favorites_count }} {{ str_plural('like', $favorites_count) }}</p>
                     </div>

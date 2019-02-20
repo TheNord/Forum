@@ -28,10 +28,10 @@ class ProfileTest extends TestCase
     {
         $user = create('App\User', ['name' => 'John Smith']);
 
-        $thread = create('App\Thread', ['user_id' => $user->id]);
+        create('App\Thread', ['user_id' => $user->id]);
 
         $this->get(route('user.profile', $user))
-            ->assertSee($thread->title);
+            ->assertSee('1 thread');
     }
 
     /**

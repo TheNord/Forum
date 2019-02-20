@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
 {
+    use RecordsActivity;
+
     protected  $guarded = [];
 
     protected $with = ['owner', 'favorites'];
@@ -18,6 +20,11 @@ class Reply extends Model
     public function favorites()
     {
         return $this->morphMany(Favorite::class, 'favorited');
+    }
+
+    public function thread()
+    {
+        return $this->belongsTo(Thread::class);
     }
 
     public function favorite($userId)

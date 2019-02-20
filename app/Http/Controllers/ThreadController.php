@@ -63,6 +63,6 @@ class ThreadController extends Controller
     public function destroy(Channel $channel, Thread $thread)
     {
         $this->service->deleteThread($thread);
-        return route('threads.index');
+        return redirect()->route('threads.index');
     }
 }
