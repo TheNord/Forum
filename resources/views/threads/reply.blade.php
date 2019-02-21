@@ -1,4 +1,4 @@
-<div class="card mt-4">
+<div id="reply-{{ $reply->id }}" class="card mt-4">
     <div class="card-header">
         <a href="{{ route('user.profile', $reply->owner) }}">
             {{ $reply->owner->name }}
