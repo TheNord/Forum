@@ -4,15 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Channel;
 use App\Http\Requests\Reply\CreateRequest;
+use App\Http\Services\ReplyService;
 use App\Reply;
 use App\Thread;
 use Illuminate\Http\Request;
 
 class ReplyController extends Controller
 {
-    public function __construct()
+    private $service;
+
+    public function __construct(ReplyService $service)
     {
         $this->middleware('auth');
+        $this->service = $service;
     }
 
     public function store(CreateRequest $request, Channel $channel, Thread $thread)
@@ -22,8 +26,7 @@ class ReplyController extends Controller
             'user_id' => auth()->id()
         ]);
 
-        return redirect()->route('threads.show', [$thread->channel->slug, $thread->id])
-            ->with('flash', 'Your reply has been left.');
+        return back()->with('flash', 'Your reply has been left.');
     }
 
     public function edit(Reply $reply)
@@ -36,8 +39,13 @@ class ReplyController extends Controller
         //
     }
 
-    public function destroy(Reply $reply)
+    public function destroy(Channel $channel, Thread $thread, Reply $reply)
     {
-        //
+        try {
+            $this->service->deleteReply($reply);
+            return back()->with('flash', 'Your reply has been deleted.');
+        } catch (\Exception $e) {
+            return back()->with('flash', $e->getMessage());
+        }
     }
 }

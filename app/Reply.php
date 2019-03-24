@@ -35,8 +35,8 @@ class Reply extends Model
             throw new \LogicException('You have already marked this post as favorited');
         }
 
-        if ($this->user_id == $userId) {
-            throw new \LogicException('Can not rate your post');
+        if ($this->isOwner()) {
+            throw new \LogicException('Can not rate your own post');
         }
 
         return $this->favorites()->create($attributes);
@@ -46,5 +46,10 @@ class Reply extends Model
     public function isFavorited()
     {
         return !! $this->favorites->where('user_id', auth()->id())->count();
+    }
+
+    public function isOwner()
+    {
+        return $this->user_id == auth()->id();
     }
 }

@@ -16,7 +16,11 @@ class FavoriteController extends Controller
 
     public function store(Reply $reply)
     {
-        $reply->favorite(auth()->id());
-        return back();
+        try {
+            $reply->favorite(auth()->id());
+            return back();
+        } catch (\Exception $e) {
+            return back()->with('flash', $e->getMessage());
+        }
     }
 }

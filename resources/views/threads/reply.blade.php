@@ -13,10 +13,22 @@
             </form>
         </div>
     </div>
-
     <div class="card-body">
         <article>
             <div class="body">{{ $reply->body }}</div>
         </article>
+
+        @if ($reply->isOwner())
+            <hr/>
+
+            <div class="float-right">
+                <form action="{{ route('reply.delete', [$thread->channel, $thread, $reply]) }}" method="post">
+                    @csrf
+                    @method('delete')
+
+                    <button class="btn-icn" type="submit"><i class="far fa-trash-alt icn-delete"></i></button>
+                </form>
+            </div>
+        @endif
     </div>
 </div>
