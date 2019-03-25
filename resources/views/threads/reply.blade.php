@@ -34,13 +34,7 @@
 
                 <div class="float-right btn-group">
                     <button class="btn-icn mr-3" @click="editing = true"><i class="fa fa-pencil-alt icn-edit "></i></button>
-
-                    <form action="{{ route('reply.delete', [$thread->channel, $thread, $reply]) }}" method="post">
-                        @csrf
-                        @method('delete')
-
-                        <button class="btn-icn" type="submit"><i class="far fa-trash-alt icn-delete"></i></button>
-                    </form>
+                    <button class="btn-icn" @click="destroy"><i class="far fa-trash-alt icn-delete"></i></button>
                 </div>
             @endif
         </div>

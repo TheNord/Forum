@@ -18,6 +18,15 @@
                         this.editing = false;
                     })
                     .catch(error => console.log(error))
+            },
+            destroy() {
+                axios
+                    .delete(`/reply/${this.attributes.id}`)
+                    .then(res => {
+                        $(this.$el).fadeOut(300);
+                        flash(res.data); 
+                    })
+                    .catch(error => console.log(error))
             }
         },
     }

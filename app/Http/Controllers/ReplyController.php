@@ -57,9 +57,9 @@ class ReplyController extends Controller
     {
         try {
             $this->service->deleteReply($reply);
-            return back()->with('flash', 'Your reply has been deleted.');
+            return response('Your reply has been deleted.', 201);
         } catch (\Exception $e) {
-            return back()->with('flash', $e->getMessage());
+            return response($e->getMessage(), 403);
         }
     }
 

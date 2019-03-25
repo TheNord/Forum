@@ -1835,6 +1835,16 @@ __webpack_require__.r(__webpack_exports__);
       }).catch(function (error) {
         return console.log(error);
       });
+    },
+    destroy: function destroy() {
+      var _this2 = this;
+
+      axios.delete("/reply/".concat(this.attributes.id)).then(function (res) {
+        $(_this2.$el).fadeOut(300);
+        flash(res.data);
+      }).catch(function (error) {
+        return console.log(error);
+      });
     }
   }
 });
