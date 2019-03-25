@@ -23,7 +23,7 @@ class DeleteReplyTest extends TestCase
 
         $reply = create('App\Reply', ['user_id' => $user->id]);
 
-        $this->json('delete', route('reply.delete', [$reply->thread->channel, $reply->thread->id, $reply->id]));
+        $this->json('delete', route('reply.delete', $reply->id));
 
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
 
@@ -45,7 +45,7 @@ class DeleteReplyTest extends TestCase
 
         $reply = create('App\Reply');
 
-        $this->json('delete', route('threads.delete', [$reply->thread->channel, $reply->thread->id, $reply->id]));
+        $this->json('delete', route('reply.delete', $reply->id));
 
         $this->assertDatabaseHas('replies', ['id' => $reply->id]);
     }
