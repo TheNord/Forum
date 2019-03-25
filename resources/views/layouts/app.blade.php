@@ -31,5 +31,11 @@
 
         <flash message="{{ session('flash') }}"></flash>
     </div>
+
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
 </body>
 </html>

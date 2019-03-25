@@ -20,4 +20,41 @@ class ReplyTest extends TestCase
 
         $this->assertInstanceOf('App\User', $reply->owner);
     }
+
+    /**
+     * @test
+     */
+    public function a_user_can_delete_his_reply()
+    {
+        $user = create('App\User');
+
+        $this->signIn($user);
+
+        $reply = create('App\Reply', ['user_id' => $user->id]);
+
+        $updatedVariable = 'Changed reply';
+
+        $this->json('put', route('reply.update', [$reply->id]), ['body' => $updatedVariable]);
+
+        $this->assertDatabaseHas('replies', ['id' => $reply->id, 'body' => $updatedVariable]);
+
+    }
+
+    /**
+     * @test
+     */
+    public function a_user_can_delete_only_own_reply()
+    {
+        $user = create('App\User');
+
+        $this->signIn($user);
+
+        $reply = create('App\Reply');
+
+        $updatedVariable = 'Changed reply';
+
+        $this->json('put', route('reply.update', [$reply->id]), ['body' => $updatedVariable]);
+
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id, 'body' => $updatedVariable]);
+    }
 }

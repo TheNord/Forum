@@ -36,7 +36,21 @@ class ReplyController extends Controller
 
     public function update(Request $request, Reply $reply)
     {
-        //
+        try {
+            $this->isOwner($reply);
+
+            $request->validate([
+                'body' => 'required',
+            ]);
+
+            $reply->update([
+                'body' => $request->body,
+            ]);
+
+            return response('Reply successfully updated', 200);
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 403);
+        }
     }
 
     public function destroy(Channel $channel, Thread $thread, Reply $reply)
@@ -46,6 +60,13 @@ class ReplyController extends Controller
             return back()->with('flash', 'Your reply has been deleted.');
         } catch (\Exception $e) {
             return back()->with('flash', $e->getMessage());
+        }
+    }
+
+    public function isOwner(Reply $reply)
+    {
+        if ($reply->user_id != auth()->id()) {
+            throw new \Exception('You can not perform this action');
         }
     }
 }

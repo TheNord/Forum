@@ -10678,6 +10678,14 @@ a.text-dark:focus {
   color: #810f1e;
 }
 
+.icn-edit {
+  color: #fb9800;
+}
+
+.icn-edit:hover {
+  color: #bc6d00;
+}
+
 .page-header {
   padding-bottom: 9px;
   margin: 40px 0 20px;
