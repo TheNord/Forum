@@ -1,4 +1,6 @@
 <script>
+    import Favorite from './Favorite';
+
     export default {
         props: ['attributes'],
         data() {
@@ -29,5 +31,8 @@
                     .catch(error => console.log(error))
             }
         },
+        components: {
+            Favorite
+        }
     }
 </script>

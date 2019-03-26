@@ -6,12 +6,7 @@
             </a>
             said {{ $reply->created_at->diffForHumans() }}...
             <div class="float-right">
-                <form action="{{ route('reply.favorite', $reply) }}" method="post">
-                    @csrf
-                    <button type="submit" class="btn btn-outline-primary" {{ $reply->isFavorited() ? 'disabled' : '' }}>
-                        {{ $reply->favorites_count }} favorites
-                    </button>
-                </form>
+                <favorite :reply="{{ $reply }}"></favorite>
             </div>
         </div>
         <div class="card-body">

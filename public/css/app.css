@@ -10686,6 +10686,10 @@ a.text-dark:focus {
   color: #bc6d00;
 }
 
+.icn-liked {
+  color: #cf1228;
+}
+
 .page-header {
   padding-bottom: 9px;
   margin: 40px 0 20px;
