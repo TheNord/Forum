@@ -5,9 +5,11 @@
                 {{ $reply->owner->name }}
             </a>
             said {{ $reply->created_at->diffForHumans() }}...
-            <div class="float-right">
-                <favorite :reply="{{ $reply }}"></favorite>
-            </div>
+            @if(Auth::check())
+                <div class="float-right">
+                    <favorite :reply="{{ $reply }}"></favorite>
+                </div>
+            @endif
         </div>
         <div class="card-body">
             <article>

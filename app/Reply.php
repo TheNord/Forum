@@ -49,7 +49,9 @@ class Reply extends Model
     {
         $attributes = ['user_id' => $userId];
 
-        return $this->favorites()->where($attributes)->delete();
+        return $this->favorites()->where($attributes)->get()->each(function ($favorite) {
+            $favorite->delete();
+        });
 
     }
 
