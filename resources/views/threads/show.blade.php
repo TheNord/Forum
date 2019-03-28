@@ -28,34 +28,12 @@
                         </div>
                     </div>
 
-                    <replies :data="{{ $thread->replies }}" @removed="repliesCount--"></replies>
+                    <replies :thread="{{ $thread }}" :channel="{{ $thread->channel }}" @removed="repliesCount--"></replies>
 
-                    <div class="mt-4">
-                        {{ $replies->links() }}
-                    </div>
+                    {{--<div class="mt-4">--}}
+                        {{--{{ $replies->links() }}--}}
+                    {{--</div>--}}
 
-
-                    <div class="mt-4">
-                        <h2>New reply</h2>
-                        @if (auth()->check())
-                            <form action="{{ route('reply.store', [$thread->channel, $thread->id]) }}" method="post">
-                                @csrf
-                                <div class="form-group">
-                                    <label for="body"></label>
-                                    <textarea name="body" id="body"
-                                              class="form-control{{ $errors->has('body') ? ' is-invalid' : '' }}"
-                                              rows="6" placeholder="Have something to say?">{{ old('body') }}</textarea>
-                                    @if ($errors->has('body'))
-                                        <span class="invalid-feedback"><strong>{{ $errors->first('body') }}</strong></span>
-                                    @endif
-                                </div>
-
-                                <button type="submit" class="btn btn-success">Post</button>
-                            </form>
-                        @else
-                            <p>Please <a href="{{ route('login') }}">sign in</a> to participate in this discussion.</p>
-                        @endif
-                    </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card">

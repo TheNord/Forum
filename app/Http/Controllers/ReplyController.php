@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Channel;
 use App\Http\Requests\Reply\CreateRequest;
+use App\Http\Resources\ReplyResource;
 use App\Http\Services\ReplyService;
 use App\Reply;
 use App\Thread;
@@ -15,23 +16,29 @@ class ReplyController extends Controller
 
     public function __construct(ReplyService $service)
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('getReplies');
         $this->service = $service;
     }
 
     public function store(CreateRequest $request, Channel $channel, Thread $thread)
     {
-        $thread->addReply([
+        $reply = $thread->addReply([
             'body' => $request->body,
             'user_id' => auth()->id()
         ]);
 
-        return back()->with('flash', 'Your reply has been left.');
+        return response(new ReplyResource($reply), 200);
     }
 
     public function edit(Reply $reply)
     {
         //
+    }
+
+    public function getReplies(Thread $thread)
+    {
+        $replies = ReplyResource::collection($thread->replies()->get());
+        return response($replies, 200);
     }
 
     public function update(Request $request, Reply $reply)

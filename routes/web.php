@@ -26,6 +26,7 @@ Route::delete('/threads/{channel}/{thread}', 'ThreadController@destroy')->name('
 Route::get('/threads/{channel}', 'ChannelController@show')->name('channel.show');
 
 Route::get('/threads/{channel}/{thread}#reply-{reply}', 'ThreadController@show')->name('reply.show');
+Route::get('/thread/{thread}/replies', 'ReplyController@getReplies');
 Route::post('/threads/{channel}/{thread}/replies', 'ReplyController@store')->name('reply.store');
 Route::put('/reply/{reply}', 'ReplyController@update')->name('reply.update');
 Route::delete('/reply/{reply}', 'ReplyController@destroy')->name('reply.delete');

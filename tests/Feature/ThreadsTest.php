@@ -44,7 +44,7 @@ class ThreadsTest extends TestCase
     {
         $reply = create('App\Reply', ['thread_id' => $this->thread->id]);
 
-        $this->get(route('threads.show', [$this->thread->channel, $this->thread]))
+        $this->get("/thread/{$this->thread->id}/replies")
             ->assertSee($reply->body);
     }
     

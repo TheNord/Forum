@@ -39,7 +39,7 @@ class ParticipateInForum extends TestCase
 
         $this->post(route('reply.store', [$thread->channel, $thread->id]), $reply->toArray());
 
-        $this->get(route('threads.show', [$thread->channel, $thread->id]))
+        $this->get("/thread/{$thread->id}/replies")
             ->assertSee($reply->body);
     }
     

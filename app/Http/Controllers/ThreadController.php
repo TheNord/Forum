@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Channel;
 use App\Http\Requests\Thread\CreateRequest;
+use App\Http\Resources\ReplyResource;
 use App\Http\Services\ThreadService;
 use App\Thread;
 use App\User;
@@ -47,8 +48,7 @@ class ThreadController extends Controller
 
     public function show(Channel $channel, Thread $thread)
     {
-        $replies = $thread->replies()->paginate(5);
-        return view('threads.show', compact('thread', 'replies'));
+        return view('threads.show', compact('thread'));
     }
 
     public function edit(Thread $thread)
