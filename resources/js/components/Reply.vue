@@ -15,13 +15,13 @@
                 <div class="body">
                     <div v-if="editing">
                         <div class="form-group">
-                            <textarea name="body" class="form-control" rows="5" v-model="body"></textarea>
+                            <textarea name="body" class="form-control" rows="5" v-model="attributes.body"></textarea>
                         </div>
 
                         <button class="btn btn-sm btn-primary" @click="update">Update</button>
                         <button class="btn btn-sm btn-link" @click="editing = false">Cancel</button>
                     </div>
-                    <div v-else v-text="body"></div>
+                    <div v-else v-text="attributes.body"></div>
                 </div>
             </article>
 
@@ -45,14 +45,13 @@
             return {
                 editing: false,
                 id: this.attributes.id,
-                body: this.attributes.body
             }
         },
         methods: {
             update() {
                 axios
                     .put(`/reply/${this.attributes.id}`, {
-                        body: this.body
+                        body: this.attributes.body
                     })
                     .then(res => {
                         flash(res.data);

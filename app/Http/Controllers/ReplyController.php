@@ -30,15 +30,15 @@ class ReplyController extends Controller
         return response(new ReplyResource($reply), 200);
     }
 
-    public function edit(Reply $reply)
-    {
-        //
-    }
-
     public function getReplies(Thread $thread)
     {
-        $replies = ReplyResource::collection($thread->replies()->get());
-        return response($replies, 200);
+        $data = $thread->replies()->paginate(5);
+        $replies = ReplyResource::collection($data);
+
+        return response([
+            'replies' => $replies,
+            'paginate' => $data,
+        ], 200);
     }
 
     public function update(Request $request, Reply $reply)

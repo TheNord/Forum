@@ -30,10 +30,6 @@
 
                     <replies :thread="{{ $thread }}" :channel="{{ $thread->channel }}" @removed="repliesCount--"></replies>
 
-                    {{--<div class="mt-4">--}}
-                        {{--{{ $replies->links() }}--}}
-                    {{--</div>--}}
-
                 </div>
                 <div class="col-md-4">
                     <div class="card">
