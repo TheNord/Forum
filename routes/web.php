@@ -31,7 +31,13 @@ Route::post('/threads/{channel}/{thread}/replies', 'ReplyController@store')->nam
 Route::put('/reply/{reply}', 'ReplyController@update')->name('reply.update');
 Route::delete('/reply/{reply}', 'ReplyController@destroy')->name('reply.delete');
 
+Route::post('/threads/{channel}/{thread}/subscribe', 'SubscribeThreadController@store')->name('thread.subscribe');
+Route::delete('/threads/{channel}/{thread}/unsubscribe', 'SubscribeThreadController@destroy')->name('thread.unsubscribe');
+
 Route::post('/replies/{reply}/favorite', 'FavoriteController@store')->name('reply.favorite');
 Route::delete('/replies/{reply}/favorite', 'FavoriteController@destroy')->name('reply.unFavorite');
 
 Route::get('/profile/{user}', 'UserController@profile')->name('user.profile');
+
+Route::get('/notifications', 'UserNotificationsController@fetch')->name('notifications');
+Route::delete('/notifications/{notification}/read', 'UserNotificationsController@destroy')->name('notifications.read');

@@ -32,8 +32,9 @@ window.flash = function (message) {
     window.events.$emit('flash', message);
 };
 
-Vue.component('flash', require('./components/Flash.vue').default)
-Vue.component('paginator', require('./components/Paginator.vue').default)
+Vue.component('flash', require('./components/Flash.vue').default);
+Vue.component('paginator', require('./components/Paginator.vue').default);
+Vue.component('user-notifications', require('./components/UserNotifications.vue').default);
 
 Vue.component('thread-view', require('./pages/Thread.vue').default);
 
