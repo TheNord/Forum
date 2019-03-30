@@ -39,6 +39,7 @@
             changePage(page) {
                 this.url = `/thread/${this.thread.id}/replies?page=` + page;
                 this.getReplies();
+                window.scroll(0, 0);
             },
             getReplies() {
                 axios

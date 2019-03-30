@@ -15,8 +15,13 @@
 
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('threads.index') }}">Threads</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="threadDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Threads</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ route('threads.index') }}">All threads</a>
+                        <a class="dropdown-item" href="{{ route('threads.index') }}/?popular=1">Popular threads</a>
+                        <a class="dropdown-item" href="{{ route('threads.index') }}/?unanswered=1">Unanswered threads</a>
+                    </div>
                 </li>
 
                 <li class="nav-item dropdown">

@@ -2058,6 +2058,7 @@ __webpack_require__.r(__webpack_exports__);
     changePage: function changePage(page) {
       this.url = "/thread/".concat(this.thread.id, "/replies?page=") + page;
       this.getReplies();
+      window.scroll(0, 0);
     },
     getReplies: function getReplies() {
       var _this = this;

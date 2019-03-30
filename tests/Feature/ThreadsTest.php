@@ -68,6 +68,19 @@ class ThreadsTest extends TestCase
     /**
     * @test
     */
+    public function a_user_can_filter_unaswered_threads()
+    {
+        $thread = create('App\Thread');
+        create('App\Reply', ['thread_id' => $thread->id]);
+
+        $this->get(route('threads.index') . '/?unanswered=1')
+            ->assertSee($this->thread->title)
+            ->assertDontSee($thread->title);
+    }
+    
+    /**
+    * @test
+    */
     public function a_user_can_filter_threads_by_any_username()
     {
         $this->signIn(create('App\User', ['name' => 'John']));

@@ -32,6 +32,7 @@ class DeleteReplyTest extends TestCase
             'subject_type' => get_class($reply)
         ]);
 
+        $this->assertEquals(0, $reply->thread->fresh()->replies_count);
     }
 
     /**

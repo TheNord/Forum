@@ -20,6 +20,10 @@ class ThreadService
             return Thread::orderBy('replies_count', 'desc');
         }
 
+        if ($request->has('unanswered')) {
+            return Thread::where('replies_count', 0);
+        }
+
         return Thread::latest();
     }
 

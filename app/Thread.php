@@ -10,15 +10,6 @@ class Thread extends Model
 
     protected  $guarded = [];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope('replyCount', function ($builder) {
-           $builder->withCount('replies');
-        });
-    }
-
     public function replies()
     {
         return $this->hasMany(Reply::class)
