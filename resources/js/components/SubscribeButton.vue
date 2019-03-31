@@ -19,7 +19,7 @@
                         flash('Subscribed');
                         this.subscribed = true;
                     })
-                    .catch(error => console.log(error))
+                    .catch(error => flash(error.response.data, 'danger'))
             },
             unsubscribe() {
                 axios
@@ -28,7 +28,7 @@
                         flash('Unsubscribed');
                         this.subscribed = false;
                     })
-                    .catch(error => console.log(error))
+                    .catch(error => flash(error.response.data, 'danger'))
             }
         },
     }

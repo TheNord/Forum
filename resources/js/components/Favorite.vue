@@ -31,7 +31,7 @@
                         this.favoriteCount++;
                         this.isFavorited = true;
                     })
-                    .catch(error => flash(error.response.data))
+                    .catch(error => flash(error.response.data, 'danger'))
             },
             destroy() {
                 axios
@@ -40,7 +40,7 @@
                         this.favoriteCount--;
                         this.isFavorited = false;
                     })
-                    .catch(error => flash(error.response.data))
+                    .catch(error => flash(error.response.data, 'danger'))
             }
         },
     }

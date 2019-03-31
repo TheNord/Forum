@@ -57,7 +57,7 @@
                         flash(res.data);
                         this.editing = false;
                     })
-                    .catch(error => console.log(error))
+                    .catch(error => flash(error.response.data, 'danger'))
             },
             destroy() {
                 axios

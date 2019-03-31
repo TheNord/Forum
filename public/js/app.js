@@ -1795,7 +1795,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.favoriteCount++;
         _this.isFavorited = true;
       }).catch(function (error) {
-        return flash(error.response.data);
+        return flash(error.response.data, 'danger');
       });
     },
     destroy: function destroy() {
@@ -1805,7 +1805,7 @@ __webpack_require__.r(__webpack_exports__);
         _this2.favoriteCount--;
         _this2.isFavorited = false;
       }).catch(function (error) {
-        return flash(error.response.data);
+        return flash(error.response.data, 'danger');
       });
     }
   }
@@ -1828,11 +1828,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['message'],
   data: function data() {
     return {
       body: '',
+      level: 'success',
       show: false
     };
   },
@@ -1843,13 +1848,14 @@ __webpack_require__.r(__webpack_exports__);
       this.flash(this.message);
     }
 
-    window.events.$on('flash', function (message) {
-      _this.flash(message);
+    window.events.$on('flash', function (data) {
+      _this.flash(data);
     });
   },
   methods: {
-    flash: function flash(message) {
-      this.body = message;
+    flash: function flash(data) {
+      this.body = data.message;
+      this.level = data.level;
       this.show = true;
       this.hide();
     },
@@ -1923,7 +1929,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.$emit('new-reply', res.data);
       }).catch(function (error) {
-        return console.log(error.response.data);
+        return flash(error.response.data, 'danger');
       });
     }
   }
@@ -2146,7 +2152,7 @@ __webpack_require__.r(__webpack_exports__);
         flash(res.data);
         _this.editing = false;
       }).catch(function (error) {
-        return console.log(error);
+        return flash(error.response.data, 'danger');
       });
     },
     destroy: function destroy() {
@@ -2210,7 +2216,7 @@ __webpack_require__.r(__webpack_exports__);
         flash('Subscribed');
         _this.subscribed = true;
       }).catch(function (error) {
-        return console.log(error);
+        return flash(error.response.data, 'danger');
       });
     },
     unsubscribe: function unsubscribe() {
@@ -2220,7 +2226,7 @@ __webpack_require__.r(__webpack_exports__);
         flash('Unsubscribed');
         _this2.subscribed = false;
       }).catch(function (error) {
-        return console.log(error);
+        return flash(error.response.data, 'danger');
       });
     }
   }
@@ -38035,17 +38041,15 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      directives: [
-        { name: "show", rawName: "v-show", value: _vm.show, expression: "show" }
-      ],
-      staticClass: "alert alert-info alert-flash",
-      attrs: { role: "alert" }
-    },
-    [_vm._v("\n    " + _vm._s(_vm.body) + "\n")]
-  )
+  return _c("div", {
+    directives: [
+      { name: "show", rawName: "v-show", value: _vm.show, expression: "show" }
+    ],
+    staticClass: "alert alert-flash",
+    class: "alert-" + _vm.level,
+    attrs: { role: "alert" },
+    domProps: { textContent: _vm._s(_vm.body) }
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -50669,7 +50673,11 @@ Vue.prototype.authorize = function (handler) {
 window.events = new Vue();
 
 window.flash = function (message) {
-  window.events.$emit('flash', message);
+  var level = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'success';
+  window.events.$emit('flash', {
+    message: message,
+    level: level
+  });
 };
 
 Vue.component('flash', __webpack_require__(/*! ./components/Flash.vue */ "./resources/js/components/Flash.vue").default);

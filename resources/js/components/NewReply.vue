@@ -45,7 +45,7 @@
                         flash('Your reply was added');
                         this.$emit('new-reply', res.data);
                     })
-                    .catch(error => console.log(error.response.data))
+                    .catch(error => flash(error.response.data, 'danger'))
             }
         },
     }
