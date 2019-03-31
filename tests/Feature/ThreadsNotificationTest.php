@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Notifications\ThreadWasUpdated;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
@@ -47,7 +48,7 @@ class ThreadsNotificationTest extends TestCase
         ]);
 
         $this->get(route('notifications'))
-            ->assertSee($reply->body);
+            ->assertSee($reply->title);
     }
     
     /**
