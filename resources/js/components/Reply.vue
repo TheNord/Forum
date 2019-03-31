@@ -15,7 +15,8 @@
                 <div class="body">
                     <div v-if="editing">
                         <div class="form-group">
-                            <textarea name="body" class="form-control" rows="5" v-model="attributes.body"></textarea>
+                            <textarea name="body" class="form-control" rows="5" v-model="attributes.body" :class="{'is-invalid': errors.body}"></textarea>
+                            <span v-if="errors.body" class="invalid-feedback"><strong>{{ errors.body[0] }}</strong></span>
                         </div>
 
                         <button class="btn btn-sm btn-primary" @click="update">Update</button>
@@ -45,6 +46,7 @@
             return {
                 editing: false,
                 id: this.attributes.id,
+                errors: []
             }
         },
         methods: {
@@ -56,8 +58,9 @@
                     .then(res => {
                         flash(res.data);
                         this.editing = false;
+                        this.errors = [];
                     })
-                    .catch(error => flash(error.response.data, 'danger'))
+                    .catch(error => this.errors = error.response.data.errors)
             },
             destroy() {
                 axios

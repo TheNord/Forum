@@ -35,15 +35,8 @@ class ThreadController extends Controller
         return view('threads.create', compact('channels'));
     }
 
-    public function store(CreateRequest $request, Spam $spam)
+    public function store(CreateRequest $request)
     {
-        try {
-            $spam->detect($request->body);
-        } catch (\Exception $e) {
-            return redirect()->back()
-                ->with('flash', $e->getMessage());
-        }
-
         $thread = Thread::create([
             'user_id' => auth()->id(),
             'channel_id' => $request->channel_id,

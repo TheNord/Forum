@@ -24,8 +24,8 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
-            'body' => 'required',
+            'title' => 'required|spamfree',
+            'body' => 'required|spamfree',
             'channel_id' => 'required', 'exists:channels,id'
         ];
     }

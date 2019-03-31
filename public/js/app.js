@@ -1929,7 +1929,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.$emit('new-reply', res.data);
       }).catch(function (error) {
-        return flash(error.response.data, 'danger');
+        _this.errors = error.response.data.errors;
       });
     }
   }
@@ -2133,13 +2133,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['attributes'],
   data: function data() {
     return {
       editing: false,
-      id: this.attributes.id
+      id: this.attributes.id,
+      errors: []
     };
   },
   methods: {
@@ -2151,8 +2153,9 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         flash(res.data);
         _this.editing = false;
+        _this.errors = [];
       }).catch(function (error) {
-        return flash(error.response.data, 'danger');
+        return _this.errors = error.response.data.errors;
       });
     },
     destroy: function destroy() {
@@ -38124,7 +38127,7 @@ var render = function() {
                 _vm._v(" "),
                 _vm.errors.body
                   ? _c("span", { staticClass: "invalid-feedback" }, [
-                      _c("strong", [_vm._v(_vm._s(_vm.errors.body))])
+                      _c("strong", [_vm._v(_vm._s(_vm.errors.body[0]))])
                     ])
                   : _vm._e()
               ]),
@@ -38408,6 +38411,7 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control",
+                      class: { "is-invalid": _vm.errors.body },
                       attrs: { name: "body", rows: "5" },
                       domProps: { value: _vm.attributes.body },
                       on: {
@@ -38418,7 +38422,13 @@ var render = function() {
                           _vm.$set(_vm.attributes, "body", $event.target.value)
                         }
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.body
+                      ? _c("span", { staticClass: "invalid-feedback" }, [
+                          _c("strong", [_vm._v(_vm._s(_vm.errors.body[0]))])
+                        ])
+                      : _vm._e()
                   ]),
                   _vm._v(" "),
                   _c(

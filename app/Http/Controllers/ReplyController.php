@@ -7,7 +7,6 @@ use App\Http\Requests\Reply\CreateRequest;
 use App\Http\Resources\ReplyResource;
 use App\Http\Services\ReplyService;
 use App\Reply;
-use App\Service\SpamDetection\Spam;
 use App\Thread;
 use Illuminate\Http\Request;
 
@@ -21,14 +20,8 @@ class ReplyController extends Controller
         $this->service = $service;
     }
 
-    public function store(CreateRequest $request, Channel $channel, Thread $thread, Spam $spam)
+    public function store(CreateRequest $request, Channel $channel, Thread $thread)
     {
-        try {
-            $spam->detect($request->body);
-        } catch (\Exception $e) {
-            return response($e->getMessage(), 403);
-        }
-
         $reply = $thread->addReply([
             'body' => $request->body,
             'user_id' => auth()->id()
@@ -48,24 +41,24 @@ class ReplyController extends Controller
         ], 200);
     }
 
-    public function update(Request $request, Reply $reply, Spam $spam)
+    public function update(Request $request, Reply $reply)
     {
         try {
             $this->isOwner($reply);
-            $spam->detect($request->body);
-
-            $request->validate([
-                'body' => 'required',
-            ]);
-
-            $reply->update([
-                'body' => $request->body,
-            ]);
-
-            return response('Reply successfully updated', 200);
         } catch (\Exception $e) {
             return response($e->getMessage(), 403);
         }
+
+        $request->validate([
+            'body' => 'required|spamfree',
+        ]);
+
+        $reply->update([
+            'body' => $request->body,
+        ]);
+
+        return response('Reply successfully updated', 200);
+
     }
 
     public function destroy(Channel $channel, Thread $thread, Reply $reply)

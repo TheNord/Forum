@@ -24,7 +24,7 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'body' => ['required', 'min:6']
+            'body' => ['required', 'min:6', 'spamfree']
         ];
     }
 }

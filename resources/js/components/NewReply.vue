@@ -8,7 +8,7 @@
                               class="form-control" :class="{'is-invalid': errors.body}"
                               rows="6" placeholder="Have something to say?">{{ body }}</textarea>
 
-                    <span v-if="errors.body" class="invalid-feedback"><strong>{{ errors.body }}</strong></span>
+                    <span v-if="errors.body" class="invalid-feedback"><strong>{{ errors.body[0] }}</strong></span>
                 </div>
 
                 <button type="submit" class="btn btn-success">Post</button>
@@ -45,7 +45,9 @@
                         flash('Your reply was added');
                         this.$emit('new-reply', res.data);
                     })
-                    .catch(error => flash(error.response.data, 'danger'))
+                    .catch(error => {
+                        this.errors = error.response.data.errors;
+                    })
             }
         },
     }
