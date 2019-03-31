@@ -10,8 +10,8 @@ class ParticipateInForum extends TestCase
     use DatabaseMigrations;
 
     /**
-    * @test
-    */
+     * @test
+     */
     public function unauthenticated_users_may_not_add_replies()
     {
         $thread = create('App\Thread');
@@ -20,10 +20,10 @@ class ParticipateInForum extends TestCase
         $response = $this->post(route('reply.store', [$thread->channel, $thread->id]), $reply->toArray());
         $this->assertEquals(302, $response->getStatusCode());
     }
-    
+
     /**
-    * @test
-    */
+     * @test
+     */
     public function an_authenticated_user_may_participate_in_forum_threads()
     {
         // create user and authenticated him
@@ -40,10 +40,10 @@ class ParticipateInForum extends TestCase
         $this->get("/thread/{$thread->id}/replies")
             ->assertSee($reply->body);
     }
-    
+
     /**
-    * @test
-    */
+     * @test
+     */
     public function a_reply_requires_a_body()
     {
         $this->signIn(create('App\User'));
@@ -53,10 +53,10 @@ class ParticipateInForum extends TestCase
         $this->post(route('reply.store', [$thread->channel, $thread]))
             ->assertSessionHasErrors(['body']);
     }
-    
+
     /**
-    * @test
-    */
+     * @test
+     */
     public function replies_that_contain_spam_may_not_be_created()
     {
         $this->signIn(create('App\User'));
@@ -71,5 +71,27 @@ class ParticipateInForum extends TestCase
 
         $this->get("/thread/{$thread->id}/replies")
             ->assertDontSee($reply->body);
+    }
+
+    /**
+     * @test
+     */
+    public function user_may_only_reply_a_maximum_of_once_per_minute()
+    {
+        $user = create('App\User');
+        $this->signIn($user);
+
+        $thread = create('App\Thread');
+
+        $reply = make('App\Reply', [
+            'body' => 'Simple reply body',
+            'user_id' => $user
+        ]);
+
+        $this->post(route('reply.store', [$thread->channel, $thread->id]), $reply->toArray())
+            ->assertStatus(200);
+
+        $this->post(route('reply.store', [$thread->channel, $thread->id]), $reply->toArray())
+            ->assertStatus(403);
     }
 }

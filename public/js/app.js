@@ -1929,6 +1929,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.$emit('new-reply', res.data);
       }).catch(function (error) {
+        flash(error.response.data, 'danger');
         _this.errors = error.response.data.errors;
       });
     }

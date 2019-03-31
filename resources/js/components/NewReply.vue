@@ -46,6 +46,7 @@
                         this.$emit('new-reply', res.data);
                     })
                     .catch(error => {
+                        flash(error.response.data, 'danger');
                         this.errors = error.response.data.errors;
                     })
             }
