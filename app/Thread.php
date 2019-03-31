@@ -4,6 +4,7 @@ namespace App;
 
 use App\Events\ThreadHasNewReply;
 use App\Notifications\ThreadWasUpdated;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
@@ -34,6 +35,7 @@ class Thread extends Model
     {
         /** @var Reply $reply */
         $reply = $this->replies()->create($reply);
+        $this->updateThreadUnViewedCache();
 
         event(new ThreadHasNewReply($this, $reply));
 
@@ -74,5 +76,23 @@ class Thread extends Model
         return $this->subscriptions()
             ->where('user_id', auth()->id())
             ->exists();
+    }
+
+    public function hasUpdatedFor()
+    {
+        if (!auth()->check()) {
+            return false;
+        }
+
+        $key = sprintf("users.%s.visits.%s", auth()->id(), $this->id);
+        return $this->updated_at > cache($key);
+    }
+
+    public function updateThreadUnViewedCache()
+    {
+        if (auth()->check()) {
+            $key = sprintf("users.%s.visits.%s", auth()->id(), $this->id);
+            cache()->forever($key, Carbon::now());
+        }
     }
 }

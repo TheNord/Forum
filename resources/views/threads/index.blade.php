@@ -9,7 +9,13 @@
                         <div class="card mt-4">
                             <div class="card-header">
                                 <a href="{{ route('threads.show', [$thread->channel, $thread->id]) }}">
-                                    {{ $thread->title }}
+                                    @if ($thread->hasUpdatedFor())
+                                        <strong>
+                                            {{ $thread->title }}
+                                        </strong>
+                                    @else
+                                        {{ $thread->title }}
+                                    @endif
                                 </a>
 
                                 <strong class="float-right">{{ $thread->replies_count }} {{ str_plural('reply', $thread->replies_count) }}</strong>

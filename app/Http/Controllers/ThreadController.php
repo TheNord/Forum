@@ -8,6 +8,7 @@ use App\Http\Resources\ReplyResource;
 use App\Http\Services\ThreadService;
 use App\Thread;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ThreadController extends Controller
@@ -48,6 +49,7 @@ class ThreadController extends Controller
 
     public function show(Channel $channel, Thread $thread)
     {
+        $thread->updateThreadUnViewedCache();
         return view('threads.show', compact('thread'));
     }
 
