@@ -4,8 +4,6 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ParticipateInForum extends TestCase
 {
@@ -54,5 +52,24 @@ class ParticipateInForum extends TestCase
 
         $this->post(route('reply.store', [$thread->channel, $thread]))
             ->assertSessionHasErrors(['body']);
+    }
+    
+    /**
+    * @test
+    */
+    public function replies_that_contain_spam_may_not_be_created()
+    {
+        $this->signIn(create('App\User'));
+
+        $thread = create('App\Thread');
+
+        $reply = make('App\Reply', [
+            'body' => 'Yahoo Customer Support'
+        ]);
+
+        $this->post(route('reply.store', [$thread->channel, $thread->id]), $reply->toArray());
+
+        $this->get("/thread/{$thread->id}/replies")
+            ->assertDontSee($reply->body);
     }
 }

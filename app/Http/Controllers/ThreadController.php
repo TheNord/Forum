@@ -6,6 +6,7 @@ use App\Channel;
 use App\Http\Requests\Thread\CreateRequest;
 use App\Http\Resources\ReplyResource;
 use App\Http\Services\ThreadService;
+use App\Service\SpamDetection\Spam;
 use App\Thread;
 use App\User;
 use Carbon\Carbon;
@@ -34,8 +35,15 @@ class ThreadController extends Controller
         return view('threads.create', compact('channels'));
     }
 
-    public function store(CreateRequest $request)
+    public function store(CreateRequest $request, Spam $spam)
     {
+        try {
+            $spam->detect($request->body);
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('flash', $e->getMessage());
+        }
+
         $thread = Thread::create([
             'user_id' => auth()->id(),
             'channel_id' => $request->channel_id,
