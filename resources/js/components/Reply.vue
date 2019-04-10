@@ -22,7 +22,7 @@
                         <button class="btn btn-sm btn-primary" @click="update">Update</button>
                         <button class="btn btn-sm btn-link" @click="editing = false">Cancel</button>
                     </div>
-                    <div v-else v-text="attributes.body"></div>
+                    <div v-else v-html="attributes.body"></div>
                 </div>
             </article>
 

@@ -15,7 +15,7 @@ class NotifyMentionedUsers
      */
     public function handle($event)
     {
-        preg_match_all('/\@([^\s\.]+)/', $event->reply->body, $matches);
+        preg_match_all('/\@([\w\-]+)/', $event->reply->body, $matches);
 
         foreach ($matches[1] as $username) {
             $user = User::whereName($username)->first();

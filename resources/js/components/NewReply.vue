@@ -21,6 +21,9 @@
 </template>
 
 <script>
+    import 'at.js';
+    import 'jquery.caret';
+
     export default {
         props: ['data', 'channel'],
         data() {
@@ -35,6 +38,23 @@
             signedIn() {
                 return window.App.signedIn;
             },
+        },
+        mounted() {
+            $('#body').atwho({
+                at: "@",
+                delay: 200,
+                callbacks: {
+                    remoteFilter: function(query, callback) {
+                        axios
+                            .get('/api/users', {params: {
+                                name: query
+                                }
+                            })
+                            .then(res => callback(res.data))
+                            .catch(error => console.log(error))
+                    }
+                }
+            });
         },
         methods: {
             send() {

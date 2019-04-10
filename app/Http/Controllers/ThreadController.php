@@ -54,16 +54,6 @@ class ThreadController extends Controller
         return view('threads.show', compact('thread'));
     }
 
-    public function edit(Thread $thread)
-    {
-        //
-    }
-
-    public function update(Request $request, Thread $thread)
-    {
-        //
-    }
-
     public function destroy(Channel $channel, Thread $thread)
     {
         try {

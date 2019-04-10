@@ -57,4 +57,19 @@ class ReplyTest extends TestCase
 
         $this->assertDatabaseMissing('replies', ['id' => $reply->id, 'body' => $updatedVariable]);
     }
+    
+    /**
+    * @test
+    */
+    public function it_wraps_mentioned_username_in_the_body_within_anchor_tags()
+    {
+        $reply = new \App\Reply([
+            'body' => 'Hello @Alex.'
+        ]);
+
+        $this->assertEquals(
+            'Hello <a href="/profile/Alex">@Alex</a>.',
+            $reply->body
+        );
+    }
 }
