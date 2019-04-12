@@ -19,6 +19,9 @@
                                 </a>
 
                                 <strong class="float-right">{{ $thread->replies_count }} {{ str_plural('reply', $thread->replies_count) }}</strong>
+
+                                <br />
+                                Posted by: <a href="{{ route('user.profile', $thread->creator->name) }}">{{ $thread->creator->name }}</a>
                             </div>
                             <div class="card-body">
                                 <div class="body">{{ $thread->body }}</div>

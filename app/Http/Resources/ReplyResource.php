@@ -22,7 +22,19 @@ class ReplyResource extends JsonResource
             'isFavorited' => $this->isFavorited,
             'thread_id' => $this->thread_id,
             'user_id' => $this->user_id,
-            'owner' => ['name' => $this->owner->name],
+            'owner' => [
+                'name' => $this->owner->name,
+                'avatar' => $this->getAvatar(),
+            ],
         ];
+    }
+
+    public function getAvatar()
+    {
+        if ($this->owner->hasAvatar()) {
+            return asset("storage/{$this->owner->avatar_path}");
+        }
+
+        return asset('images/default-avatar.png');
     }
 }

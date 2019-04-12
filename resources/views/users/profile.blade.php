@@ -4,6 +4,18 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                <div class="page-header">
+                    @if ($user->hasAvatar())
+                        <img src="{{ asset("storage/$user->avatar_path") }}" alt="user_avatar" style="height: 75px;" class="float-right">
+                    @endif
+
+                    <h1>{{ $user->name }}</h1>
+
+                    @can('update', $user)
+                        <a href="{{ route('user.profile.edit') }}">Edit profile</a>
+                    @endcan
+                </div>
+
                     @forelse($activities as $date => $activity)
                         <h3 class="page-header">{{ $date }}</h3>
 

@@ -1,7 +1,10 @@
 <template>
     <div :id="'reply-'+id" class="card mt-4">
         <div class="card-header">
-            <a :href="'/profile/'+attributes.owner.name"
+
+            <img :src="attributes.owner.avatar" alt="user_avatar" height="25" width="25" class="mr-1">
+
+            <a :href="'/profile/'+attributes.owner.name/show"
             v-text="attributes.owner.name">
             </a>
             said {{ attributes.created_at }}...

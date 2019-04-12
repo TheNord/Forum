@@ -7,6 +7,10 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header">
+                            @if ($thread->creator->hasAvatar())
+                                <img src="{{ asset("storage/{$thread->creator->avatar_path}") }}" alt="user_avatar" height="25" width="25" class="mr-1">
+                            @endif
+
                             {{ $thread->title }}
 
                             @if($thread->isOwner())

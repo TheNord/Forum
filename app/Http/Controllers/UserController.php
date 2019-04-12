@@ -13,6 +13,11 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except('profile');
+    }
+
     public function profile(User $user)
     {
         $threads_count = Thread::where('user_id', $user->id)->count();
@@ -29,5 +34,39 @@ class UserController extends Controller
                 'activities'
             )
         );
+    }
+
+    public function edit()
+    {
+        $user = auth()->user();
+        return view('users.edit', compact('user'));
+    }
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|unique:users,name,' . auth()->id()
+        ]);
+
+        auth()->user()->update([
+            'name' => $request->name,
+        ]);
+
+        if ($request->avatar) {
+            $this->uploadAvatar($request);
+        }
+
+        return back();
+    }
+
+    public function uploadAvatar(Request $request)
+    {
+        $request->validate([
+            'avatar' => 'required|image'
+        ]);
+
+        auth()->user()->update([
+           'avatar_path' => $request->file('avatar')->store('avatars', 'public')
+        ]);
     }
 }

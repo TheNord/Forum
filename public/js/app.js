@@ -3380,6 +3380,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['attributes'],
@@ -40063,8 +40066,18 @@ var render = function() {
     { staticClass: "card mt-4", attrs: { id: "reply-" + _vm.id } },
     [
       _c("div", { staticClass: "card-header" }, [
+        _c("img", {
+          staticClass: "mr-1",
+          attrs: {
+            src: _vm.attributes.owner.avatar,
+            alt: "user_avatar",
+            height: "25",
+            width: "25"
+          }
+        }),
+        _vm._v(" "),
         _c("a", {
-          attrs: { href: "/profile/" + _vm.attributes.owner.name },
+          attrs: { href: "/profile/" + _vm.attributes.owner.name / _vm.show },
           domProps: { textContent: _vm._s(_vm.attributes.owner.name) }
         }),
         _vm._v(
