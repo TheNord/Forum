@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Thread;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 
 class TrendingService
@@ -14,6 +15,8 @@ class TrendingService
 
     public function increment(Thread $thread)
     {
+        if (! $this->checkCanIncrement()) return;
+
         Redis::zincrby($this->cacheKey(), 1, json_encode([
             'title' => $thread->title,
             'path' => route('threads.show', [$thread->channel->name, $thread->id])
@@ -23,6 +26,17 @@ class TrendingService
     public function clear()
     {
         Redis::del($this->cacheKey());
+    }
+
+    public function checkCanIncrement()
+    {
+        $ip = request()->ip();
+
+        if (Cache::has("view-{$ip}")) return false;
+
+        Cache::put("view-{$ip}", 1, '1');
+
+        return true;
     }
 
     protected function cacheKey()
