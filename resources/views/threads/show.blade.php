@@ -46,6 +46,8 @@
                                 {{ str_plural('reply', $thread->replies_count) }}
                             </p>
 
+                            <p>Thread Visits: {{ $thread->visits }}</p>
+
                             @auth
                                 <subscribe-button :active="{{ $thread->isSubscribedTo ? 'true' : 'false' }}"></subscribe-button>
                             @endauth

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Channel;
 use App\Http\Requests\Thread\CreateRequest;
 use App\Http\Services\ThreadService;
+use App\Service\ThreadVisitsService;
 use App\Service\TrendingService;
 use App\Thread;
 use Illuminate\Http\Request;
@@ -49,11 +50,12 @@ class ThreadController extends Controller
             ->with('flash', 'Your thread has been published');
     }
 
-    public function show(Channel $channel, Thread $thread, TrendingService $trending)
+    public function show(Channel $channel, Thread $thread, TrendingService $trending, ThreadVisitsService $threadVisits)
     {
         $thread->updateThreadUnViewedCache();
 
         $trending->increment($thread);
+        $threadVisits->recordVisit($thread);
 
         return view('threads.show', compact('thread'));
     }

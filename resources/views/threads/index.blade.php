@@ -24,8 +24,13 @@
                                 Posted by: <a
                                         href="{{ route('user.profile', $thread->creator->name) }}">{{ $thread->creator->name }}</a>
                             </div>
+
                             <div class="card-body">
                                 <div class="body">{{ $thread->body }}</div>
+                            </div>
+
+                            <div class="card-footer">
+                                 {{ $thread->visits }} {{ str_plural('visit', $thread->visits) }}
                             </div>
                         </div>
                     </article>

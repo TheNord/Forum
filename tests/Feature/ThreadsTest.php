@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Service\ThreadVisitsService;
 use App\Thread;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
@@ -47,7 +48,7 @@ class ThreadsTest extends TestCase
         $this->get("/thread/{$this->thread->id}/replies")
             ->assertSee($reply->body);
     }
-    
+
     /**
     * @test
     */
@@ -64,7 +65,7 @@ class ThreadsTest extends TestCase
             ->assertSee($thread->body)
             ->assertDontSee($otherChannelThread->body);
     }
-    
+
     /**
     * @test
     */
@@ -77,7 +78,7 @@ class ThreadsTest extends TestCase
             ->assertSee($this->thread->title)
             ->assertDontSee($thread->title);
     }
-    
+
     /**
     * @test
     */
@@ -91,5 +92,19 @@ class ThreadsTest extends TestCase
         $this->get('/?by=John')
             ->assertSee($threadByJohn->title)
             ->assertDontSee($threadNotByJohn->title);
+    }
+
+    /**
+     * @test
+     */
+    public function a_thread_record_each_visit()
+    {
+        $thread = create('App\Thread');
+
+        $visitService = new ThreadVisitsService();
+        $visitService->resetVisits($thread);
+
+        $this->json('GET', route('threads.show', [$thread->channel->name, $thread->id]))
+            ->assertSee('Visits: 1');
     }
 }

@@ -3,7 +3,7 @@
 namespace App;
 
 use App\Events\ThreadHasNewReply;
-use App\Notifications\ThreadWasUpdated;
+use App\Service\ThreadVisitsService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -94,5 +94,11 @@ class Thread extends Model
             $key = sprintf("users.%s.visits.%s", auth()->id(), $this->id);
             cache()->forever($key, Carbon::now());
         }
+    }
+
+    public function getVisitsAttribute()
+    {
+        $threadVisits = new ThreadVisitsService();
+        return $threadVisits->visits($this) ?? 0;
     }
 }
