@@ -21,7 +21,7 @@
                 <img src="{{ asset("storage/$user->avatar_path") }}" alt="avatar" class="img-fluid" style="height: 100px;">
                 <div class="form-group">
                     <label for="avatar">Avatar</label>
-                    <input type="file" class="form-control" id="avatar" name="avatar" placeholder="">
+                    <input type="file" class="form-control" id="avatar" name="avatar" accept="image/*">
                 </div>
 
                 <button type="submit" class="btn btn-success">Upload</button>

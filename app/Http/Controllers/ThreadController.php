@@ -4,12 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Channel;
 use App\Http\Requests\Thread\CreateRequest;
-use App\Http\Resources\ReplyResource;
 use App\Http\Services\ThreadService;
-use App\Service\SpamDetection\Spam;
+use App\Service\TrendingService;
 use App\Thread;
-use App\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ThreadController extends Controller
@@ -22,11 +19,15 @@ class ThreadController extends Controller
         $this->service = $service;
     }
 
-    public function index(Request $request)
+    public function index(Request $request, TrendingService $trending)
     {
 
         $threads = $this->service->filterThread($request)->paginate(5);
-        return view('threads.index', compact('threads'));
+
+        return view('threads.index', [
+            'threads' => $threads,
+            'trending' => $trending->get()
+        ]);
     }
 
     public function create()
@@ -48,9 +49,12 @@ class ThreadController extends Controller
             ->with('flash', 'Your thread has been published');
     }
 
-    public function show(Channel $channel, Thread $thread)
+    public function show(Channel $channel, Thread $thread, TrendingService $trending)
     {
         $thread->updateThreadUnViewedCache();
+
+        $trending->increment($thread);
+
         return view('threads.show', compact('thread'));
     }
 
