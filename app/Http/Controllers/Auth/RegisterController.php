@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -37,13 +38,13 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest')->except('confirm');
     }
 
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -58,7 +59,7 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return \App\User
      */
     protected function create(array $data)
@@ -67,6 +68,30 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'confirmation_token' => str_limit(md5($data['email'] . str_random()), 25, ''),
         ]);
+    }
+
+    /**
+     * Confirmation user email address
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function confirm(Request $request)
+    {
+
+        /** @var User $user */
+        $user = User::where('confirmation_token', $request->token)->first();
+
+        if (!$user) {
+            return redirect(route('threads.index'))
+                ->with('flash', 'Unknown token.');
+        }
+
+        $user->confirm();
+
+        return redirect(route('threads.index'))
+            ->with('flash', 'Your account has been confirmed.');
     }
 }

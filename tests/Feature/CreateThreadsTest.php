@@ -54,7 +54,7 @@ class CreateThreadsTest extends TestCase
     */
     public function a_thread_require_a_title()
     {
-        $this->signIn(create('App\User'));
+        $this->signIn(factory('App\User')->state('confirmed')->create());
 
         $this->post(route('threads.store'))
             ->assertSessionHasErrors(['title']);
@@ -65,7 +65,7 @@ class CreateThreadsTest extends TestCase
     */
     public function a_thread_require_a_body()
     {
-        $this->signIn(create('App\User'));
+        $this->signIn(factory('App\User')->state('confirmed')->create());
 
         $this->post(route('threads.store'))
             ->assertSessionHasErrors(['body']);
@@ -76,9 +76,23 @@ class CreateThreadsTest extends TestCase
     */
     public function a_thread_require_a_channel()
     {
-        $this->signIn(create('App\User'));
+        $this->signIn(factory('App\User')->state('confirmed')->create());
 
         $this->post(route('threads.store'))
             ->assertSessionHasErrors(['channel_id']);
+    }
+    
+    /**
+    * @test
+    */
+    public function authenticated_users_must_first_confirm_their_email_before_creating_threads()
+    {
+        $this->signIn($user = create('App\User'));
+
+        $thread = make('App\Thread');
+
+        $this->json('POST', route('threads.store'), $thread->toArray())
+            ->assertRedirect('/')
+            ->assertSessionHas('flash', 'You must first confirm email address.');
     }
 }

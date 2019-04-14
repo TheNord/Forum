@@ -20,7 +20,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', 'ThreadController@index')->name('threads.index');
 Route::get('/threads/{channel}/{thread}', 'ThreadController@show')->name('threads.show');
 Route::get('/threads/create', 'ThreadController@create')->name('threads.create');
-Route::post('/threads', 'ThreadController@store')->name('threads.store');
+Route::post('/threads', 'ThreadController@store')->name('threads.store')->middleware('check.email.confirmed');
 Route::delete('/threads/{channel}/{thread}', 'ThreadController@destroy')->name('threads.delete');
 
 Route::get('/threads/{channel}', 'ChannelController@show')->name('channel.show');
@@ -46,3 +46,5 @@ Route::get('/notifications', 'UserNotificationsController@fetch')->name('notific
 Route::delete('/notifications/{notification}/read', 'UserNotificationsController@destroy')->name('notifications.read');
 
 Route::get('/api/users', 'Api\UsersController@index');
+
+Route::get('/register/confirm', 'Auth\RegisterController@confirm')->name('register.confirm');
