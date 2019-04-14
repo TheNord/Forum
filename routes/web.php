@@ -37,6 +37,9 @@ Route::delete('/threads/{channel}/{thread}/unsubscribe', 'SubscribeThreadControl
 Route::post('/replies/{reply}/favorite', 'FavoriteController@store')->name('reply.favorite');
 Route::delete('/replies/{reply}/favorite', 'FavoriteController@destroy')->name('reply.unFavorite');
 
+Route::post('/replies/{reply}/best', 'ReplyController@markAsBest')->name('reply.best.mark');
+Route::delete('/replies/{reply}/best', 'ReplyController@unMarkAsBest')->name('reply.best.unMark');
+
 Route::get('/user/{user}/show', 'UserController@profile')->name('user.profile');
 
 Route::get('/profile/edit', 'UserController@edit')->name('user.profile.edit');

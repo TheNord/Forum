@@ -47,6 +47,7 @@ $factory->define(App\Thread::class, function (Faker $faker) {
         'title' => $title = $faker->sentence,
         'body' => $faker->paragraph,
         'slug' => str_slug($title),
+        'best_reply_id' => null,
     ];
 });
 

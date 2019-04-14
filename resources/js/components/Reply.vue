@@ -1,6 +1,6 @@
 <template>
     <div :id="'reply-'+id" class="card mt-4">
-        <div class="card-header">
+        <div class="card-header" :class="attributes.isBest ? 'best-answer' : ''">
 
             <img :src="attributes.owner.avatar" alt="user_avatar" height="25" width="25" class="mr-1">
 
@@ -10,6 +10,7 @@
             said {{ attributes.created_at }}...
 
             <div class="float-right" v-if="signedIn">
+                <best-reply :reply="attributes"></best-reply>
                 <favorite :reply="attributes"></favorite>
             </div>
         </div>
@@ -36,12 +37,13 @@
                     <button class="btn-icn" @click="destroy"><i class="far fa-trash-alt icn-delete"></i></button>
                 </div>
                 </div>
-        </div>
+            </div>
     </div>
 </template>
 
 <script>
     import Favorite from './Favorite';
+    import BestReply from './BestReply';
 
     export default {
         props: ['attributes'],
@@ -51,6 +53,19 @@
                 id: this.attributes.id,
                 errors: []
             }
+        },
+        created() {
+            events.$on('markBest', (reply) => {
+                if (this.attributes.id === reply) {
+                    this.attributes.isBest = true;
+                }
+            });
+
+            events.$on('unMarkBest', (reply) => {
+                if (this.attributes.id === reply) {
+                    this.attributes.isBest = false;
+                }
+            });
         },
         methods: {
             update() {
@@ -74,7 +89,7 @@
                         this.$emit('deleted', this.attributes.id)
                     })
                     .catch(error => console.log(error))
-            }
+            },
         },
         computed: {
             signedIn() {
@@ -85,7 +100,19 @@
             }
         },
         components: {
-            Favorite
+            Favorite,
+            BestReply
         }
     }
 </script>
+
+<style>
+    .best-answer {
+        background-color: #bae2bc;
+        color: #fff;
+    }
+
+    .best-answer a {
+        color: #5371af;
+    }
+</style>

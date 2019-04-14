@@ -84,6 +84,11 @@ class Reply extends Model
         return $this->created_at->gt(Carbon::now()->subMinute());
     }
 
+    public function isBest()
+    {
+        return $this->thread->best_reply_id == $this->id;
+    }
+
     public function setBodyAttribute($body)
     {
         $this->attributes['body'] = preg_replace('/\@([\w\-]+)/', '<a href="/profile/$1">$0</a>', $body);

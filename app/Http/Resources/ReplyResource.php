@@ -20,6 +20,8 @@ class ReplyResource extends JsonResource
             'created_at' => $this->created_at->diffForHumans(),
             'favorites_count' => $this->favorites_count,
             'isFavorited' => $this->isFavorited,
+            'isBest' => $this->isBest(),
+            'bestReplyId' => $this->thread->best_reply_id,
             'thread_id' => $this->thread_id,
             'user_id' => $this->user_id,
             'owner' => [

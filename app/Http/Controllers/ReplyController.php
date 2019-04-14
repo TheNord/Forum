@@ -83,4 +83,30 @@ class ReplyController extends Controller
             throw new \Exception('You can not perform this action');
         }
     }
+
+    public function markAsBest(Reply $reply)
+    {
+        if ($reply->thread->user_id != auth()->id() || $reply->user_id == auth()->id()) {
+            return response('You can not mark this reply as best.', 403);
+        }
+
+        $reply->thread()->update([
+            'best_reply_id' => $reply->id,
+        ]);
+
+        return response('Reply marked as best.', 200);
+    }
+
+    public function unMarkAsBest(Reply $reply)
+    {
+        if ($reply->thread->user_id != auth()->id()) {
+            return response('You can not un mark this reply.', 403);
+        }
+
+        $reply->thread()->update([
+            'best_reply_id' => null,
+        ]);
+
+        return response('Reply has been un marked.', 200);
+    }
 }

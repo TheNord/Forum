@@ -49,7 +49,7 @@ class ThreadWasUpdated extends Notification
     {
         return [
             'message' => $this->reply->owner->name . ' replied to ' . $this->thread->title,
-            'link' => route('reply.show', [$this->thread->channel->name, $this->thread->id, $this->reply->id]),
+            'link' => route('reply.show', [$this->thread->channel->name, $this->thread->slug, $this->reply->id]),
         ];
     }
 }

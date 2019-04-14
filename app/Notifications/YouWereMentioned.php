@@ -46,7 +46,7 @@ class YouWereMentioned extends Notification
     {
         return [
             'message' => $this->reply->owner->name . ' mentioned you in ' . $this->reply->thread->title,
-            'link' => route('reply.show', [$this->reply->thread->channel->name, $this->reply->thread->id, $this->reply->id]),
+            'link' => route('reply.show', [$this->reply->thread->channel->name, $this->reply->thread->slug, $this->reply->id]),
         ];
     }
 }
