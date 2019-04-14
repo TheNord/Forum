@@ -17,7 +17,7 @@ class ParticipateInForum extends TestCase
         $thread = create('App\Thread');
         $reply = create('App\Reply');
 
-        $response = $this->post(route('reply.store', [$thread->channel, $thread->id]), $reply->toArray());
+        $response = $this->post(route('reply.store', [$thread->channel, $thread->slug]), $reply->toArray());
         $this->assertEquals(302, $response->getStatusCode());
     }
 
@@ -35,9 +35,9 @@ class ParticipateInForum extends TestCase
         // create reply
         $reply = make('App\Reply');
 
-        $this->post(route('reply.store', [$thread->channel, $thread->id]), $reply->toArray());
+        $this->post(route('reply.store', [$thread->channel, $thread->slug]), $reply->toArray());
 
-        $this->get("/thread/{$thread->id}/replies")
+        $this->get("/thread/{$thread->slug}/replies")
             ->assertSee($reply->body);
     }
 
@@ -67,7 +67,7 @@ class ParticipateInForum extends TestCase
             'body' => 'Yahoo Customer Support'
         ]);
 
-        $this->post(route('reply.store', [$thread->channel, $thread->id]), $reply->toArray());
+        $this->post(route('reply.store', [$thread->channel, $thread->slug]), $reply->toArray());
 
         $this->get("/thread/{$thread->id}/replies")
             ->assertDontSee($reply->body);
@@ -88,10 +88,10 @@ class ParticipateInForum extends TestCase
             'user_id' => $user
         ]);
 
-        $this->post(route('reply.store', [$thread->channel, $thread->id]), $reply->toArray())
+        $this->post(route('reply.store', [$thread->channel, $thread->slug]), $reply->toArray())
             ->assertStatus(200);
 
-        $this->post(route('reply.store', [$thread->channel, $thread->id]), $reply->toArray())
+        $this->post(route('reply.store', [$thread->channel, $thread->slug]), $reply->toArray())
             ->assertStatus(403);
     }
 }

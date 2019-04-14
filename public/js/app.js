@@ -3297,7 +3297,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       items: null,
       paginate: null,
-      url: "/thread/".concat(this.thread.id, "/replies")
+      url: "/thread/".concat(this.thread.slug, "/replies")
     };
   },
   created: function created() {
@@ -3311,7 +3311,7 @@ __webpack_require__.r(__webpack_exports__);
       this.items.push(reply);
     },
     changePage: function changePage(page) {
-      this.url = "/thread/".concat(this.thread.id, "/replies?page=") + page;
+      this.url = "/thread/".concat(this.thread.slug, "/replies?page=") + page;
       this.getReplies();
       window.scroll(0, 0);
     },

@@ -23,10 +23,10 @@ class CreateThreadsTest extends TestCase
         $response = $this->post(route('threads.store'), $thread->toArray());
         $this->assertEquals(302, $response->getStatusCode());
     }
-    
+
     /**
-    * @test
-    */
+     * @test
+     */
     public function guest_cannot_see_the_create_threat_page()
     {
         $this->get(route('threads.create'))
@@ -44,14 +44,48 @@ class CreateThreadsTest extends TestCase
 
         $this->post(route('threads.store'), $thread->toArray());
 
-        $this->get(route('threads.show', [$thread->channel, $thread->id]))
+        $this->get($thread->path())
             ->assertSee($thread->title)
             ->assertSee($thread->body);
     }
 
     /**
-    * @test
-    */
+     * @test
+     */
+    public function a_thread_require_a_unique_slug()
+    {
+        $this->signIn(factory('App\User')->state('confirmed')->create());
+
+        $thread = create('App\Thread', ['title' => 'Thread Title', 'slug' => 'thread-title']);
+
+        $this->assertEquals($thread->fresh()->slug, 'thread-title');
+
+        $this->post(route('threads.store', $thread->toArray()));
+
+        $this->assertTrue(Thread::whereSlug('thread-title-2')->exists());
+
+        $this->post(route('threads.store', $thread->toArray()));
+
+        $this->assertTrue(Thread::whereSlug('thread-title-3')->exists());
+    }
+
+    /**
+     * @test
+     */
+    public function a_thread_with_a_title_that_ends_in_a_number_should_generate_the_proper_slug()
+    {
+        $this->signIn(factory('App\User')->state('confirmed')->create());
+
+        $thread = create('App\Thread', ['title' => 'Thread Title 24', 'slug' => 'thread-title-24']);
+
+        $this->post(route('threads.store', $thread->toArray()));
+
+        $this->assertTrue(Thread::whereSlug('thread-title-24-2')->exists());
+    }
+
+    /**
+     * @test
+     */
     public function a_thread_require_a_title()
     {
         $this->signIn(factory('App\User')->state('confirmed')->create());
@@ -61,8 +95,8 @@ class CreateThreadsTest extends TestCase
     }
 
     /**
-    * @test
-    */
+     * @test
+     */
     public function a_thread_require_a_body()
     {
         $this->signIn(factory('App\User')->state('confirmed')->create());
@@ -72,8 +106,8 @@ class CreateThreadsTest extends TestCase
     }
 
     /**
-    * @test
-    */
+     * @test
+     */
     public function a_thread_require_a_channel()
     {
         $this->signIn(factory('App\User')->state('confirmed')->create());
@@ -81,10 +115,10 @@ class CreateThreadsTest extends TestCase
         $this->post(route('threads.store'))
             ->assertSessionHasErrors(['channel_id']);
     }
-    
+
     /**
-    * @test
-    */
+     * @test
+     */
     public function authenticated_users_must_first_confirm_their_email_before_creating_threads()
     {
         $this->signIn($user = create('App\User'));

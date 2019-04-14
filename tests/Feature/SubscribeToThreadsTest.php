@@ -19,7 +19,7 @@ class SubscribeToThreadsTest extends TestCase
 
         $thread = create('App\Thread');
 
-        $this->post(route('thread.subscribe', [$thread->channel->name, $thread->id]));
+        $this->post(route('thread.subscribe', [$thread->channel->name, $thread->slug]));
 
         $this->assertEquals(1, $thread->subscriptions()->count());
     }
@@ -34,7 +34,7 @@ class SubscribeToThreadsTest extends TestCase
 
         $thread = create('App\Thread');
 
-        $this->delete(route('thread.unsubscribe', [$thread->channel->name, $thread->id]));
+        $this->delete(route('thread.unsubscribe', [$thread->channel->name, $thread->slug]));
 
         $this->assertEquals(0, $thread->subscriptions()->count());
     }

@@ -20,7 +20,7 @@ class ThreadsNotificationTest extends TestCase
 
         $thread = create('App\Thread');
 
-        $this->post(route('thread.subscribe', [$thread->channel->name, $thread->id]));
+        $this->post(route('thread.subscribe', [$thread->channel->name, $thread->slug]));
 
         $thread->addReply([
             'user_id' => create('App\User')->id,
@@ -40,7 +40,7 @@ class ThreadsNotificationTest extends TestCase
 
         $thread = create('App\Thread');
 
-        $this->post(route('thread.subscribe', [$thread->channel->name, $thread->id]));
+        $this->post(route('thread.subscribe', [$thread->channel->name, $thread->slug]));
 
         $reply = $thread->addReply([
             'user_id' => create('App\User')->id,
@@ -61,7 +61,7 @@ class ThreadsNotificationTest extends TestCase
 
         $thread = create('App\Thread');
 
-        $this->post(route('thread.subscribe', [$thread->channel->name, $thread->id]));
+        $this->post(route('thread.subscribe', [$thread->channel->name, $thread->slug]));
 
         $thread->addReply([
             'user_id' => create('App\User')->id,

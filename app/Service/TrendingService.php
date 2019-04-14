@@ -19,7 +19,7 @@ class TrendingService
 
         Redis::zincrby($this->cacheKey(), 1, json_encode([
             'title' => $thread->title,
-            'path' => route('threads.show', [$thread->channel->name, $thread->id])
+            'path' => $thread->path()
         ]));
     }
 

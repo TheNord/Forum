@@ -8,7 +8,7 @@
                     <article>
                         <div class="card mt-4">
                             <div class="card-header">
-                                <a href="{{ route('threads.show', [$thread->channel, $thread->id]) }}">
+                                <a href="{{ $thread->path() }}">
                                     @if ($thread->hasUpdatedFor())
                                         <strong>
                                             {{ $thread->title }}

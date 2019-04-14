@@ -23,7 +23,7 @@ class DeleteThreadsTest extends TestCase
 
         $thread = create('App\Thread', ['user_id' => $user->id]);
 
-        $this->json('delete', route('threads.delete', [$thread->channel, $thread->id]));
+        $this->json('delete', route('threads.delete', [$thread->channel, $thread->slug]));
 
         $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
 

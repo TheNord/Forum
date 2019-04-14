@@ -29,7 +29,7 @@ class TrendingThreadsTest extends TestCase
 
         $thread = create('App\Thread');
 
-        $this->json('GET', route('threads.show', [$thread->channel->name, $thread->id]));
+        $this->json('GET', $thread->path());
 
         $trending = $this->trending->get();
 

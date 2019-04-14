@@ -23,7 +23,7 @@
             return {
                 items: null,
                 paginate: null,
-                url: `/thread/${this.thread.id}/replies`
+                url: `/thread/${this.thread.slug}/replies`
             }
         },
         created() {
@@ -37,7 +37,7 @@
                 this.items.push(reply);
             },
             changePage(page) {
-                this.url = `/thread/${this.thread.id}/replies?page=` + page;
+                this.url = `/thread/${this.thread.slug}/replies?page=` + page;
                 this.getReplies();
                 window.scroll(0, 0);
             },

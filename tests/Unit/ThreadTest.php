@@ -2,7 +2,6 @@
 
 namespace Tests\Unit;
 
-use App\Service\ThreadService;
 use App\Service\ThreadVisitsService;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
@@ -25,6 +24,18 @@ class ThreadTest extends TestCase
     public function a_thread_has_a_creator()
     {
         $this->assertInstanceOf('App\User', $this->thread->creator);
+    }
+    
+    /**
+    * @test
+    */
+    public function a_thread_has_a_unique_slug()
+    {
+        $thread = create('App\Thread');
+
+        $slug = str_slug($thread->title);
+
+        $this->assertEquals($slug, $thread->slug);
     }
     
     /**

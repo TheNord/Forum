@@ -101,4 +101,26 @@ class Thread extends Model
         $threadVisits = new ThreadVisitsService();
         return $threadVisits->visits($this) ?? 0;
     }
+
+    public function path()
+    {
+        return route('threads.show', [$this->channel->name, $this->slug]);
+    }
+
+    public function setSlugAttribute($slug)
+    {
+        $original = $slug;
+        $count = 2;
+
+        while (static::whereSlug($slug)->exists()) {
+            $slug = "{$original}-" . $count++;
+        }
+
+        $this->attributes['slug'] = $slug;
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }

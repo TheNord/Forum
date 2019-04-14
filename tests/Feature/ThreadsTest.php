@@ -34,7 +34,7 @@ class ThreadsTest extends TestCase
      */
     public function a_user_can_view_single_thread()
     {
-        $this->get(route('threads.show', [$this->thread->channel, $this->thread]))
+        $this->get($this->thread->path())
             ->assertSee($this->thread->title);
     }
 
@@ -45,7 +45,7 @@ class ThreadsTest extends TestCase
     {
         $reply = create('App\Reply', ['thread_id' => $this->thread->id]);
 
-        $this->get("/thread/{$this->thread->id}/replies")
+        $this->get("/thread/{$this->thread->slug}/replies")
             ->assertSee($reply->body);
     }
 
@@ -104,7 +104,7 @@ class ThreadsTest extends TestCase
         $visitService = new ThreadVisitsService();
         $visitService->resetVisits($thread);
 
-        $this->json('GET', route('threads.show', [$thread->channel->name, $thread->id]))
+        $this->json('GET', $thread->path())
             ->assertSee('Visits: 1');
     }
 }
