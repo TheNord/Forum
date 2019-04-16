@@ -4,7 +4,7 @@
 
             <img :src="attributes.owner.avatar" alt="user_avatar" height="25" width="25" class="mr-1">
 
-            <a :href="'/profile/'+attributes.owner.name/show"
+            <a :href="'/profile/'+attributes.owner.name+'/show'"
             v-text="attributes.owner.name">
             </a>
             said {{ attributes.created_at }}...
@@ -30,7 +30,7 @@
                 </div>
             </article>
 
-            <div v-if="canUpdate">
+            <div v-if="authorize('updateReply', reply)">
                 <hr/>
                 <div class="float-right btn-group">
                     <button class="btn-icn mr-3" @click="editing = true"><i class="fa fa-pencil-alt icn-edit "></i></button>
@@ -51,7 +51,8 @@
             return {
                 editing: false,
                 id: this.attributes.id,
-                errors: []
+                errors: [],
+                reply: this.attributes
             }
         },
         created() {
@@ -90,14 +91,6 @@
                     })
                     .catch(error => console.log(error))
             },
-        },
-        computed: {
-            signedIn() {
-                return window.App.signedIn;
-            },
-            canUpdate() {
-                return this.authorize(user => this.attributes.user_id === user.id);
-            }
         },
         components: {
             Favorite,

@@ -34,11 +34,6 @@
                 endpoint: location.pathname + '/replies'
             }
         },
-        computed: {
-            signedIn() {
-                return window.App.signedIn;
-            },
-        },
         mounted() {
             $('#body').atwho({
                 at: "@",

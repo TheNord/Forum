@@ -3210,11 +3210,6 @@ __webpack_require__.r(__webpack_exports__);
       endpoint: location.pathname + '/replies'
     };
   },
-  computed: {
-    signedIn: function signedIn() {
-      return window.App.signedIn;
-    }
-  },
   mounted: function mounted() {
     $('#body').atwho({
       at: "@",
@@ -3465,7 +3460,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       editing: false,
       id: this.attributes.id,
-      errors: []
+      errors: [],
+      reply: this.attributes
     };
   },
   created: function created() {
@@ -3506,18 +3502,6 @@ __webpack_require__.r(__webpack_exports__);
         _this3.$emit('deleted', _this3.attributes.id);
       }).catch(function (error) {
         return console.log(error);
-      });
-    }
-  },
-  computed: {
-    signedIn: function signedIn() {
-      return window.App.signedIn;
-    },
-    canUpdate: function canUpdate() {
-      var _this4 = this;
-
-      return this.authorize(function (user) {
-        return _this4.attributes.user_id === user.id;
       });
     }
   },
@@ -40252,7 +40236,7 @@ var render = function() {
           }),
           _vm._v(" "),
           _c("a", {
-            attrs: { href: "/profile/" + _vm.attributes.owner.name / _vm.show },
+            attrs: { href: "/profile/" + _vm.attributes.owner.name + "/show" },
             domProps: { textContent: _vm._s(_vm.attributes.owner.name) }
           }),
           _vm._v(
@@ -40339,7 +40323,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm.canUpdate
+        _vm.authorize("updateReply", _vm.reply)
           ? _c("div", [
               _c("hr"),
               _vm._v(" "),
@@ -52545,10 +52529,23 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 
-Vue.prototype.authorize = function (handler) {
-  var user = window.App.user;
-  return user ? handler(user) : false;
+var authorizations = __webpack_require__(/*! ./authorizations */ "./resources/js/authorizations.js");
+
+Vue.prototype.authorize = function () {
+  if (!window.App.signedIn) return false;
+
+  for (var _len = arguments.length, params = new Array(_len), _key = 0; _key < _len; _key++) {
+    params[_key] = arguments[_key];
+  }
+
+  if (typeof params[0] === 'string') {
+    return authorizations[params[0]](params[1]);
+  }
+
+  return params[0](window.App.user);
 };
+
+Vue.prototype.signedIn = window.App.signedIn;
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -52558,7 +52555,6 @@ Vue.prototype.authorize = function (handler) {
  */
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-
 
 window.events = new Vue();
 
@@ -52583,6 +52579,23 @@ Vue.component('thread-view', __webpack_require__(/*! ./pages/Thread.vue */ "./re
 var app = new Vue({
   el: '#app'
 });
+
+/***/ }),
+
+/***/ "./resources/js/authorizations.js":
+/*!****************************************!*\
+  !*** ./resources/js/authorizations.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var user = window.App.user;
+var authorizations = {
+  updateReply: function updateReply(reply) {
+    return reply.user_id === user.id;
+  }
+};
+module.exports = authorizations;
 
 /***/ }),
 
