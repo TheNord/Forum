@@ -10,7 +10,7 @@
             said {{ attributes.created_at }}...
 
             <div class="float-right" v-if="signedIn">
-                <best-reply :reply="attributes"></best-reply>
+                <best-reply :reply="attributes" v-if="authorize('canMarkBest', attributes.thread_creator_id)"></best-reply>
                 <favorite :reply="attributes"></favorite>
             </div>
         </div>

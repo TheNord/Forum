@@ -23,6 +23,7 @@ class ReplyResource extends JsonResource
             'isBest' => $this->isBest(),
             'bestReplyId' => $this->thread->best_reply_id,
             'thread_id' => $this->thread_id,
+            'thread_creator_id' => $this->thread->creator->id,
             'user_id' => $this->user_id,
             'owner' => [
                 'name' => $this->owner->name,

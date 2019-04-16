@@ -40249,7 +40249,9 @@ var render = function() {
                 "div",
                 { staticClass: "float-right" },
                 [
-                  _c("best-reply", { attrs: { reply: _vm.attributes } }),
+                  _vm.authorize("canMarkBest", _vm.attributes.thread_creator_id)
+                    ? _c("best-reply", { attrs: { reply: _vm.attributes } })
+                    : _vm._e(),
                   _vm._v(" "),
                   _c("favorite", { attrs: { reply: _vm.attributes } })
                 ],
@@ -52593,6 +52595,9 @@ var user = window.App.user;
 var authorizations = {
   updateReply: function updateReply(reply) {
     return reply.user_id === user.id;
+  },
+  canMarkBest: function canMarkBest(creator) {
+    return creator === user.id;
   }
 };
 module.exports = authorizations;
