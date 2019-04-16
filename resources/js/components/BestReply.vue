@@ -1,5 +1,5 @@
 <template>
-        <button class="btn btn-sm btn-success" @click="toggle" v-text="text" v-if="reply.id === reply.bestReplyId || !reply.bestReplyId"></button>
+        <button class="btn btn-sm btn-success" @click="toggle" v-text="text" v-if="canMark"></button>
 </template>
 
 <script>
@@ -25,6 +25,10 @@
             },
             text() {
                 return this.isBest ? 'Un mark as Best' : 'Mark as Best';
+            },
+            canMark() {
+                return (this.reply.id === this.reply.bestReplyId || !this.reply.bestReplyId)
+                    && window.App.user.id !== this.reply.user_id;
             }
         },
         methods: {

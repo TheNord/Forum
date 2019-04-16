@@ -3010,6 +3010,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     text: function text() {
       return this.isBest ? 'Un mark as Best' : 'Mark as Best';
+    },
+    canMark: function canMark() {
+      return (this.reply.id === this.reply.bestReplyId || !this.reply.bestReplyId) && window.App.user.id !== this.reply.user_id;
     }
   },
   methods: {
@@ -39819,7 +39822,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.reply.id === _vm.reply.bestReplyId || !_vm.reply.bestReplyId
+  return _vm.canMark
     ? _c("button", {
         staticClass: "btn btn-sm btn-success",
         domProps: { textContent: _vm._s(_vm.text) },
