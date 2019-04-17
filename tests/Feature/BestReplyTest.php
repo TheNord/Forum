@@ -2,8 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Reply;
-use App\Service\TrendingService;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
@@ -48,7 +46,7 @@ class BestReplyTest extends TestCase
 
         $this->assertFalse($reply->fresh()->isBest());
     }
-    
+
     /**
     * @test
     */
