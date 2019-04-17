@@ -49,8 +49,12 @@
                             <p>Thread Visits: {{ $thread->visits }}</p>
 
                             @auth
-                                <subscribe-button :active="{{ $thread->isSubscribedTo ? 'true' : 'false' }}"></subscribe-button>
+                                <subscribe-button :active="{{ json_encode($thread->isSubscribedTo) }}"></subscribe-button>
                             @endauth
+
+                            @can('is-admin')
+                                <locked-button :locked="{{ json_encode($thread->locked) }}"></locked-button>
+                            @endcan
                         </div>
                     </div>
                 </div>

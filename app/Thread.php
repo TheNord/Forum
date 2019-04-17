@@ -15,6 +15,10 @@ class Thread extends Model
 
     protected $appends = ['isSubscribedTo'];
 
+    protected $casts = [
+        'locked' => 'boolean',
+    ];
+
     public function replies()
     {
         return $this->hasMany(Reply::class)
@@ -31,8 +35,15 @@ class Thread extends Model
         return $this->belongsTo(Channel::class);
     }
 
+    /**
+     * @param $reply
+     * @return Reply
+     * @throws \Throwable
+     */
     public function addReply($reply)
     {
+        throw_if($this->locked, '\RuntimeException', 'Thread is locked.', 422);
+
         /** @var Reply $reply */
         $reply = $this->replies()->create($reply);
         $this->updateThreadUnViewedCache();
@@ -117,6 +128,16 @@ class Thread extends Model
         }
 
         $this->attributes['slug'] = $slug;
+    }
+
+    public function lock()
+    {
+        $this->update(['locked' => true]);
+    }
+
+    public function unlock()
+    {
+        $this->update(['locked' => false]);
     }
 
     public function getRouteKeyName()

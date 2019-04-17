@@ -69,6 +69,11 @@ class User extends Authenticatable
         $this->save();
     }
 
+    public function isAdmin()
+    {
+        return auth()->user()->is_admin;
+    }
+
     public function getRouteKeyName()
     {
         return 'name';

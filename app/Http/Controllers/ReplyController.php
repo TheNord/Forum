@@ -23,17 +23,10 @@ class ReplyController extends Controller
     public function store(CreateRequest $request, Channel $channel, Thread $thread)
     {
         try {
-            $this->authorize('create', new Reply);
+            return $this->service->store($request, $thread);
         } catch (\Exception $e) {
-            return response('You are posting too frequently. Please wait.', 403);
+            return response($e->getMessage(), $e->getCode());
         }
-
-        $reply = $thread->addReply([
-            'body' => $request->body,
-            'user_id' => auth()->id()
-        ]);
-
-        return response(new ReplyResource($reply), 200);
     }
 
     public function getReplies(Thread $thread)

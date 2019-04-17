@@ -1,6 +1,7 @@
 <script>
     import Replies from '../components/Replies';
     import SubscribeButton from '../components/SubscribeButton';
+    import LockedButton from '../components/LockedButton';
 
     export default {
         props: ['initialRepliesCount'],
@@ -11,7 +12,8 @@
         },
         components: {
             Replies,
-            SubscribeButton
+            SubscribeButton,
+            LockedButton
         }
     }
 </script>

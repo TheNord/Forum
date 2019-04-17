@@ -20,12 +20,19 @@ $factory->define(App\User::class, function (Faker $faker) {
         'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
         'remember_token' => str_random(10),
         'confirmed' => false,
+        'is_admin' => false
     ];
 });
 
 $factory->state(App\User::class, 'confirmed', function () {
     return [
         'confirmed' => true,
+    ];
+});
+
+$factory->state(App\User::class, 'administrator', function () {
+    return [
+        'is_admin' => true
     ];
 });
 
@@ -48,6 +55,7 @@ $factory->define(App\Thread::class, function (Faker $faker) {
         'body' => $faker->paragraph,
         'slug' => str_slug($title),
         'best_reply_id' => null,
+        'locked' => false,
     ];
 });
 

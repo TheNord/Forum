@@ -51,3 +51,8 @@ Route::delete('/notifications/{notification}/read', 'UserNotificationsController
 Route::get('/api/users', 'Api\UsersController@index');
 
 Route::get('/register/confirm', 'Auth\RegisterController@confirm')->name('register.confirm');
+
+// Administration
+
+Route::patch('/threads/{channel}/{thread}/lock', 'Admin\ThreadController@lock')->name('threads.lock');
+Route::delete('/threads/{channel}/{thread}/unlock', 'Admin\ThreadController@unlock')->name('threads.unlock');
