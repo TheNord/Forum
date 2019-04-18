@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('head')
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+@endsection
+
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -7,6 +11,7 @@
                 <div class="card">
                     <div class="card-header">Create a new thread</div>
                     <div class="card-body">
+                        @include('partials.error')
                         <article>
                             <div class="body">
                                 <form action="{{ route('threads.store') }}" method="post">
@@ -41,7 +46,14 @@
                                             <span class="invalid-feedback"><strong>{{ $errors->first('body') }}</strong></span>
                                         @endif
                                     </div>
-                                    <button type="submit" class="btn btn-success">Create</button>
+
+                                    <div class="form-group">
+                                        <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.public') }}"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-success">Create</button>
+                                    </div>
                                 </form>
                             </div>
                         </article>

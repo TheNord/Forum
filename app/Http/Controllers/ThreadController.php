@@ -9,6 +9,8 @@ use App\Service\ThreadVisitsService;
 use App\Service\TrendingService;
 use App\Thread;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Throw_;
+use Zttp\Zttp;
 
 class ThreadController extends Controller
 {

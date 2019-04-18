@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Channel;
+use App\Rules\Recaptcha;
 use App\Thread;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
@@ -12,6 +13,17 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class CreateThreadsTest extends TestCase
 {
     use DatabaseMigrations;
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        app()->singleton(Recaptcha::class, function () {
+            return \Mockery::mock(Recaptcha::class, function ($m) {
+                $m->shouldReceive('passes')->andReturn(true);
+            });
+        });
+    }
 
     /**
      * @test
@@ -60,11 +72,11 @@ class CreateThreadsTest extends TestCase
 
         $this->assertEquals($thread->fresh()->slug, 'thread-title');
 
-        $this->post(route('threads.store', $thread->toArray()));
+        $this->post(route('threads.store', $thread->toArray() + ['g-recaptcha-response' => 'token']));
 
         $this->assertTrue(Thread::whereSlug('thread-title-2')->exists());
 
-        $this->post(route('threads.store', $thread->toArray()));
+        $this->post(route('threads.store', $thread->toArray() + ['g-recaptcha-response' => 'token']));
 
         $this->assertTrue(Thread::whereSlug('thread-title-3')->exists());
     }
@@ -78,7 +90,7 @@ class CreateThreadsTest extends TestCase
 
         $thread = create('App\Thread', ['title' => 'Thread Title 24', 'slug' => 'thread-title-24']);
 
-        $this->post(route('threads.store', $thread->toArray()));
+        $this->post(route('threads.store', $thread->toArray() + ['g-recaptcha-response' => 'token']));
 
         $this->assertTrue(Thread::whereSlug('thread-title-24-2')->exists());
     }
@@ -103,6 +115,19 @@ class CreateThreadsTest extends TestCase
 
         $this->post(route('threads.store'))
             ->assertSessionHasErrors(['body']);
+    }
+    
+    /**
+    * @test
+    */
+    public function a_thread_requires_recaptcha_verification()
+    {
+        unset(app()[Recaptcha::class]);
+
+        $this->signIn(factory('App\User')->state('confirmed')->create());
+
+        $this->post(route('threads.store'), ['g-recaptcha-response' => 'token'])
+            ->assertSessionHasErrors(['g-recaptcha-response']);
     }
 
     /**
