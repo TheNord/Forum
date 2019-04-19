@@ -3680,11 +3680,30 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['initialRepliesCount'],
+  props: ['initialRepliesCount', 'threadBody'],
   data: function data() {
     return {
-      repliesCount: this.initialRepliesCount
+      repliesCount: this.initialRepliesCount,
+      editing: false
     };
+  },
+  methods: {
+    editThread: function editThread() {
+      this.editing = true;
+    },
+    updateThread: function updateThread() {
+      var _this = this;
+
+      axios.put(location.pathname, {
+        body: this.threadBody
+      }).then(function (res) {
+        flash(res.data);
+        _this.editing = false;
+      }).catch(function (error) {
+        return flash(error.response.data, 'danger');
+      });
+      this.editing = false;
+    }
   },
   components: {
     Replies: _components_Replies__WEBPACK_IMPORTED_MODULE_0__["default"],

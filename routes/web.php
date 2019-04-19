@@ -23,6 +23,8 @@ Route::get('/threads/create', 'ThreadController@create')->name('threads.create')
 Route::post('/threads', 'ThreadController@store')->name('threads.store')->middleware('check.email.confirmed');
 Route::delete('/threads/{channel}/{thread}', 'ThreadController@destroy')->name('threads.delete');
 
+Route::put('/threads/{channel}/{thread}', 'ThreadController@update')->name('thread.update');
+
 Route::get('/threads/{channel}', 'ChannelController@show')->name('channel.show');
 
 Route::get('/threads/{channel}/{thread}#reply-{reply}', 'ThreadController@show')->name('reply.show');

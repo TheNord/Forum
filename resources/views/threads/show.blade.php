@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <thread-view inline-template :initial-replies-count="{{ $thread->replies_count  }}">
+    <thread-view inline-template :initial-replies-count="{{ $thread->replies_count  }}" :thread-body="{{ json_encode($thread->body) }}" v-cloak>
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
@@ -13,23 +13,33 @@
 
                             {{ $thread->title }}
 
-                            @if($thread->isOwner())
+                            @if($thread->isOwner() && !$thread->hasReplies())
                                 <div class="float-right">
+                                    <button class="btn-icn thread-icon" @click.prevent="editThread"><i class="fa fa-pencil-alt icn-edit"></i></button>
+
                                     <form action="{{ route('threads.delete', [$thread->channel, $thread]) }}"
-                                          method="post">
+                                          method="post" class="thread-icon">
                                         @csrf
                                         @method('delete')
 
-                                        <button class="btn-icn" type="submit"><i
-                                                    class="far fa-trash-alt icn-delete"></i></button>
+                                        <button class="btn-icn" type="submit"><i class="far fa-trash-alt icn-delete"></i></button>
                                     </form>
                                 </div>
                             @endif
                         </div>
 
                         <div class="card-body">
-                            {{ $thread->body }}
+                            <div v-if="!editing" v-text="threadBody"></div>
+                            <div v-else>
+                                <div class="form-group">
+                                    <textarea class="form-control" v-model="threadBody" v-text="threadBody"></textarea>
+                                </div>
+
+                                <button class="btn btn-danger" @click.prevent="updateThread">Save</button>
+                                <button class="btn btn-primary" @click.prevent="editing = false">Close</button>
+                            </div>
                         </div>
+
                     </div>
 
                     <replies :thread="{{ $thread }}" :channel="{{ $thread->channel }}" @removed="repliesCount--"></replies>

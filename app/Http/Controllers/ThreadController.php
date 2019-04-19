@@ -63,12 +63,25 @@ class ThreadController extends Controller
         return view('threads.show', compact('thread'));
     }
 
+    public function update(Channel $channel, Thread $thread, Request $request)
+    {
+        $request->validate([
+            'body' => 'required|min:6',
+        ]);
+
+        try {
+            $this->service->update($request, $thread);
+            return response('Thread updated',200);
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 403);
+        }
+    }
+
     public function destroy(Channel $channel, Thread $thread)
     {
         try {
             $this->service->deleteThread($thread);
-            return redirect()->route('threads.index')
-                ->with('flash', 'The thread successfully deleted');
+            return redirect()->route('threads.index')->with('flash', 'The thread successfully deleted');
         } catch (\Exception $e) {
             return back()->with('flash', $e->getMessage());
         }
