@@ -30,7 +30,7 @@
                             </div>
 
                             <div class="card-footer">
-                                 {{ $thread->visits }} {{ str_plural('visit', $thread->visits) }}
+                                {{ $thread->visits }} {{ str_plural('visit', $thread->visits) }}
                             </div>
                         </div>
                     </article>
@@ -39,9 +39,13 @@
                     {{ $threads->links() }}
                 </div>
             </div>
+            <div class="col-md-4">
+                <!-- Search form -->
+                <form action="{{ route('threads.search') }}" method="GET" style="margin-top: 1.5rem">
+                    <input class="form-control" type="text" placeholder="Search" aria-label="Search" name="q">
+                </form>
 
-            @if(count($trending))
-                <div class="col-md-4">
+                @if(count($trending))
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <div class="card mt-4">
@@ -60,8 +64,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            @endif
+                @endif
+            </div>
+
         </div>
     </div>
 @endsection

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class BestReplyTest extends TestCase
@@ -14,6 +15,7 @@ class BestReplyTest extends TestCase
     */
     public function a_thread_creator_may_mark_any_reply_as_the_best_reply()
     {
+
         $this->signIn($user = create('App\User'));
 
         $thread = create('App\Thread', ['user_id' => $user->id]);
