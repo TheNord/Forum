@@ -19,7 +19,8 @@
                 <div class="body">
                     <div v-if="editing">
                         <div class="form-group">
-                            <textarea name="body" class="form-control" rows="5" v-model="attributes.body" :class="{'is-invalid': errors.body}"></textarea>
+                            <wysiwyg v-model="attributes.body"></wysiwyg>
+
                             <span v-if="errors.body" class="invalid-feedback"><strong>{{ errors.body[0] }}</strong></span>
                         </div>
 

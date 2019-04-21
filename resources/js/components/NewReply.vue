@@ -6,11 +6,7 @@
             <form method="post" @submit.prevent="send">
                 <div class="form-group">
                     <label for="body"></label>
-                    <textarea v-model="body" id="body"
-                              class="form-control" :class="{'is-invalid': errors.body}"
-                              rows="6" placeholder="Have something to say?"
-                              :disabled="thread.locked"
-                    >{{ body }}</textarea>
+                    <wysiwyg :disabled="thread.locked" v-model="body" :shouldClear="completed"></wysiwyg>
 
                     <span v-if="errors.body" class="invalid-feedback"><strong>{{ errors.body[0] }}</strong></span>
                 </div>
@@ -36,7 +32,8 @@
                 body: '',
                 errors: [],
                 thread: this.data,
-                endpoint: location.pathname + '/replies'
+                endpoint: location.pathname + '/replies',
+                completed: false
             }
         },
         mounted() {
@@ -62,11 +59,15 @@
                     .post(this.endpoint, {body: this.body})
                     .then(res => {
                         this.body = '';
+                        this.completed = true;
+
                         flash('Your reply was added');
+
                         this.$emit('new-reply', res.data);
                     })
                     .catch(error => {
                         flash(error.response.data, 'danger');
+
                         this.errors = error.response.data.errors;
                     })
             }

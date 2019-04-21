@@ -29,10 +29,10 @@
                         </div>
 
                         <div class="card-body">
-                            <div v-if="!editing" v-text="threadBody"></div>
+                            <div v-if="!editing" v-html="threadBody"></div>
                             <div v-else>
                                 <div class="form-group">
-                                    <textarea class="form-control" v-model="threadBody" v-text="threadBody"></textarea>
+                                    <wysiwyg v-model="threadBody" placeholder="Have something to say?..."></wysiwyg>
                                 </div>
 
                                 <button class="btn btn-danger" @click.prevent="updateThread">Save</button>

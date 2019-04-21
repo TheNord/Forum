@@ -40,8 +40,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="body">Content</label>
-                                        <textarea name="body" id="body"
-                                                  class="form-control{{ $errors->has('body') ? ' is-invalid' : '' }}" required></textarea>
+                                        <wysiwyg name="body"></wysiwyg>
                                         @if ($errors->has('body'))
                                             <span class="invalid-feedback"><strong>{{ $errors->first('body') }}</strong></span>
                                         @endif
